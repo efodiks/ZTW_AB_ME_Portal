@@ -6,7 +6,7 @@ const Registration = () => {
     
     return (
         <Container>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center" style={{margin:"10em 0em 10em 0em"}}>
                     <Col lg={6}>
                         <RegistrationForm/>
                     </Col>

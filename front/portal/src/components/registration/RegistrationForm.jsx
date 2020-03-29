@@ -11,7 +11,7 @@ const RegistrationForm = () => {
 
     return (
 
-        <Card body style={{margin:"10em 0em 10em 0em"}}>
+        <Card body>
             <Form style={{padding:"2em"}}>
                 <Form.Group controlId="registrationUsername">
                     <Form.Label>Username</Form.Label>

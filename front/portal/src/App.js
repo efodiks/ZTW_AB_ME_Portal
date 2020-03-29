@@ -4,15 +4,18 @@ import NavigationBar from './components/layout/NavigationBar.jsx';
 import Login from './components/login/Login.jsx';
 import Registration from './components/registration/Registration.jsx';
 import Dashboard from './components/dashboard/Dashboard.jsx';
+import ViewPost from './components/post-view/ViewPost.jsx';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
+
   return (
     <Router>
       <NavigationBar/>
       <Switch>
         <Route path="/dashboard" component={Dashboard}/>
         <Route path="/login" component={Login}/>
+        <Route path="/post" component={ViewPost}/>
         <Route path="/" component={Registration}/>
       </Switch>
     </Router>

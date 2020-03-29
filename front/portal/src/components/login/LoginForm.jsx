@@ -10,7 +10,7 @@ const LoginForm = () => {
     };
 
     return (
-        <Card body style={{margin:"10em 0em 10em 0em"}}>
+        <Card body>
             <Form style={{padding:"2em"}}>
                 <Form.Group controlId="registrationEmail">
                     <Form.Label>Email address</Form.Label>

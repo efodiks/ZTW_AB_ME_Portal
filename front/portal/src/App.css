@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.dark-left-divider {
+  border-right: 1px solid rgba(0,0,0,.125);
+}
+
+.profile-picture {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden
+}
+
+.profile-picture img{
+  min-width: 100%;
+  min-height: 100%
+}
