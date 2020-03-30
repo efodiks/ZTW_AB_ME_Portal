@@ -1,20 +1,25 @@
 import React from 'react';
-import { Tab, ListGroup } from 'react-bootstrap';
+import {ListGroup, Tab} from 'react-bootstrap';
+import {Link} from "react-router-dom";
 
 const SideBar = () => {
 
     return (
-        <Tab.Container id="list-group-tabs-example" defaultActiveKey="#my-posts">
+        <Tab.Container id="list-group-tabs-example" defaultActiveKey="/dashboard/posts">
             <ListGroup>
-                <ListGroup.Item action href="#my-posts">
-                My posts
-                </ListGroup.Item>
-                <ListGroup.Item action href="#add-post">
-                Add post
-                </ListGroup.Item>
+                <Link to="/dashboard/posts">
+                    <ListGroup.Item action>
+                        My posts
+                    </ListGroup.Item>
+                </Link>
+                <Link to="/dashboard/addpost">
+                    <ListGroup.Item action>
+                        Add post
+                    </ListGroup.Item>
+                </Link>
             </ListGroup>
         </Tab.Container>
     )
-}
+};
 
 export default SideBar;

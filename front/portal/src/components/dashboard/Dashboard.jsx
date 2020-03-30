@@ -4,6 +4,8 @@ import SideBar from '../layout/SideBar.jsx';
 import {Col, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {makeAddPost, onSuccessfulAddPost} from "./actions";
+import {Route} from "react-router-dom";
+import AddPost from "./AddPost";
 
 const mapStateToProps = state => {
     return {
@@ -17,7 +19,7 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-const Dashboard = ({posts, handleAddPost}) => {
+const Dashboard = ({posts, handleAddPost, match}) => {
     return (
         <div>
             <Row className="w-100">
@@ -25,7 +27,8 @@ const Dashboard = ({posts, handleAddPost}) => {
                     <SideBar/>
                 </Col>
                 <Col lg={{offset: 2}}>
-                    <PostsList posts={posts} handleAddPost={handleAddPost}/>
+                    <Route path={`${match.path}/posts`} render={() => <PostsList posts={posts}/>}/>
+                    <Route path={`${match.path}/addpost`} render={() => <AddPost handleAddPost={handleAddPost}/>}/>
                 </Col>
             </Row>
         </div>

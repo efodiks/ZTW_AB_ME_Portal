@@ -1,3 +1,5 @@
+import {push} from "connected-react-router";
+
 export const addPostSuccess = 'dashboard/addPostSuccess';
 export const addPostFailure = 'dashboard/addPostFailure';
 
@@ -11,9 +13,12 @@ export function makeAddPost(postDTO) {
 }
 
 const onSuccessfulAddPost = postDto => {
-    return {
-        type: addPostSuccess,
-        post: postDto
+    return (dispatch) => {
+        dispatch(push('posts'));
+        dispatch({
+            type: addPostSuccess,
+            post: postDto
+        })
     }
 };
 
