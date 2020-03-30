@@ -1,13 +1,28 @@
 import React from 'react';
+import thunkMiddleware from 'redux-thunk'
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {createStore} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import {loginReducer} from "./components/login/reducers";
+import {connectRouter, routerMiddleware} from "connected-react-router";
+import {createBrowserHistory} from 'history'
 
-const store = createStore(loginReducer);
+const createRootReducer = (history) => combineReducers({
+    router: connectRouter(history),
+    loginState: loginReducer
+});
+
+export const history = createBrowserHistory();
+
+const store = createStore(createRootReducer(history),
+    compose(
+        applyMiddleware(
+            routerMiddleware(history),
+            thunkMiddleware
+        )));
 
 ReactDOM.render(<App store={store}/>, document.getElementById('root'));
 
