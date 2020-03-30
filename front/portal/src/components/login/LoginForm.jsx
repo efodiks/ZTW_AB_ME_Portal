@@ -58,6 +58,6 @@ const LoginForm = ({handleLogin}) => {
             </Form>
         </Card>
     );
-}
+};
 
 export default LoginForm;
