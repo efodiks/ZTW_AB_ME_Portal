@@ -1,22 +1,23 @@
 import React from 'react';
-import AddPost from './AddPost.jsx';
 import PostsList from '../layout/PostsList.jsx';
 import SideBar from '../layout/SideBar.jsx';
-import { Row, Col } from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
+import {connect} from "react-redux";
+import {makeAddPost, onSuccessfulAddPost} from "./actions";
 
-const Dashboard = () => {  
+const mapStateToProps = state => {
+    return {
+        posts: state.dashboardState.posts
+    }
+};
 
-    let posts = [
-        {
-            author: {
-                username: "User1",
-                imgSrc: "https://images.pexels.com/photos/4015752/pexels-photo-4015752.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" 
-            },
-            imgSrc: "https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-            description: "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic."
-        }
-    ]
+const mapDispatchToProps = dispatch => {
+    return {
+        handleAddPost: postDTO => dispatch(makeAddPost(postDTO))
+    }
+};
 
+const Dashboard = ({posts, handleAddPost}) => {
     return (
         <div>
             <Row className="w-100">
@@ -24,11 +25,11 @@ const Dashboard = () => {
                     <SideBar/>
                 </Col>
                 <Col lg={{offset: 2}}>
-                    <PostsList posts={posts}/>
+                    <PostsList posts={posts} handleAddPost={handleAddPost}/>
                 </Col>
             </Row>
         </div>
     )
-}
+};
 
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -6,7 +6,6 @@ import {makeLoginRequest} from "./actions";
 import {Redirect} from "react-router-dom";
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         authorized: state.loginState.authorized
     }

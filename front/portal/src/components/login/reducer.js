@@ -14,7 +14,7 @@ const initialState = {
 export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case loginLoading:
-            return ({...state, loading: true, authorized: false});
+            return ({...state, loading: true, error: undefined, authorized: false});
         case loginFailed:
             return ({...state, loading: false, error: action.error, authorized: false});
         case loginSuccessful:
