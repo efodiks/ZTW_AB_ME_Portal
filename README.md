@@ -8,6 +8,25 @@ Należy pobrać i rozpakować projekt, w konsoli przejść do folderu "portal" (
 
 Przed pierwszym uruchomieniem należy wprowadzić w konsoli polecenie "npm install", a następnie uruchomić przy pomocy komendy "npm start".
 
+## Uruchamianie aplikacji backendowej
+Wymagane jest zainstalowanie Java 11.
+
+Należy pobrać i rozpakować projekt, w konsoli przejść do folderu "portal" (ZTW_AB_ME_Portal-master/back/portal).
+
+I wykonać polecenia:
+# Unix:
+./mvnw clean install
+./mvnw spring-boot:run
+
+# Windows:
+./mvnw.cmd clean install
+./mvnw.cmd spring-boot:run
+
+### Uruchomienie
+Należy pobrać i rozpakować projekt, w konsoli przejść do folderu "portal" (ZTW_AB_ME_Portal-master/front/portal).
+
+Przed pierwszym uruchomieniem należy wprowadzić w konsoli polecenie "npm install", a następnie uruchomić przy pomocy komendy "npm start".
+
 ## Informacja o plikach
 ### Folder "front/portal/src/config"
 - zawiera konfigurację klienta http
