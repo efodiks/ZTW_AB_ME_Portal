@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
@@ -47,7 +48,7 @@ public class AuthenticationController {
         var authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        var jwtToken = tokenProvider.createToken(authentication);
+        var jwtToken = tokenProvider.createToken(authentication, new Date());
 
         return ResponseEntity.ok(jwtToken);
     }

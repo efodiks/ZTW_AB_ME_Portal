@@ -1,16 +1,13 @@
 package com.abme.portal.security;
 
+import com.abme.portal.config.JwtProperties;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
@@ -20,22 +17,24 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    @Value("${security.secret}")
-    public String secret;
+    JwtParser jwtParser;
 
-    private Key key;
+    Key key;
 
-    private static long tokenValidityInMilliseconds = SecurityConstants.TOKEN_VALIDITY_IN_SECONDS * 1000;
+    JwtProperties jwtProperties;
 
-    @PostConstruct
-    public void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        key = Keys.hmacShaKeyFor(keyBytes);
+    private long tokenValidityInMilliseconds;
+
+    public TokenProvider(JwtParser jwtParser, Key key, JwtProperties jwtProperties) {
+        this.jwtParser = jwtParser;
+        this.key = key;
+        this.jwtProperties = jwtProperties;
+        tokenValidityInMilliseconds = jwtProperties.getToken().getValidityInSeconds() * 1000;
     }
 
-    public JwtToken createToken(Authentication authentication) {
-        long now = new Date().getTime();
-        var expiresAt = new Date(now + tokenValidityInMilliseconds);
+    public JwtToken createToken(Authentication authentication, Date now) {
+        var nowLong = now.getTime();
+        var expiresAt = new Date(nowLong + tokenValidityInMilliseconds);
 
         var authorities = authentication.getAuthorities()
                 .stream()
@@ -44,7 +43,7 @@ public class TokenProvider {
 
         String jwtString = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim(SecurityConstants.AUTHORITIES_KEY, authorities)
+                .claim(jwtProperties.getAuthoritiesKey(), authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(expiresAt)
                 .compact();
@@ -64,7 +63,7 @@ public class TokenProvider {
         Jws<Claims> jws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token.getTokenString());
         Claims claims = jws.getBody();
         var authorities = Arrays.stream(
-                claims.get(SecurityConstants.AUTHORITIES_KEY)
+                claims.get(jwtProperties.getAuthoritiesKey())
                         .toString()
                         .split(","))
                 .map(SimpleGrantedAuthority::new)
