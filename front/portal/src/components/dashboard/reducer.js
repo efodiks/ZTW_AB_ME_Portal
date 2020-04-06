@@ -1,4 +1,4 @@
-import {addPostFailure, addPostSuccess, logOut} from "./actions";
+import {actionAddPostFailure, actionAddPostSuccess} from "./actions";
 
 const initialState = {
     posts: [
@@ -15,9 +15,9 @@ const initialState = {
 
 export const dashboardReducer = (state = initialState, action) => {
     switch (action.type) {
-        case addPostSuccess:
+        case actionAddPostSuccess:
             return {...state, posts: [...state.posts, action.post]};
-        case addPostFailure:
+        case actionAddPostFailure:
             throw action.error;
         default:
             return state

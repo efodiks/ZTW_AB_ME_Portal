@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import NavigationBar from './components/layout/NavigationBar.jsx';
-import Login from './components/login/Login.jsx';
-import Registration from './components/registration/Registration.jsx';
+import Login from './components/authorization/Login.jsx';
+import Registration from './components/authorization/Registration.jsx';
 import Dashboard from './components/dashboard/Dashboard.jsx';
 import {Route, Switch} from 'react-router-dom';
 import {Provider} from "react-redux";
@@ -16,8 +16,8 @@ function App({store}) {
                 <NavigationBar/>
                 <Switch>
                     <Route path="/dashboard" component={Dashboard}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/" exact component={Registration}/>
+                    <Route path="/register" component={Registration}/>
+                    <Route path="/" exact component={Login}/>
                 </Switch>
             </ConnectedRouter>
         </Provider>

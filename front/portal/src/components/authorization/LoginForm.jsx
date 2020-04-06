@@ -1,25 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, Card, Form, InputGroup} from "react-bootstrap";
+import {useFormState} from "../../hooks/useFormState";
 
-const LoginForm = ({handleLogin}) => {
+const LoginForm = ({handleLogin, handleRegisterLink}) => {
 
     const signFormStyle = {
         width: "3em",
         display: "inline"
     };
 
-    const [loginDto, setloginDto] = useState({});
-
-    const onChange = (e) => {
-        e.persist();
-        const {name, value} = e.target;
-        setloginDto((prevState => {
-            return {
-                ...prevState,
-                [name]: value
-            }
-        }))
-    };
+    const [loginDto, onChange] = useFormState({});
 
     return (
         <Card body>
@@ -51,7 +41,11 @@ const LoginForm = ({handleLogin}) => {
                 </Form.Group>
 
                 <div className="d-flex justify-content-center">
-                    <Button id="signIn" variant="info" type="submit" style={{width: "30%"}}>
+                    <Button id="register" variant="info" onClick={handleRegisterLink} style={{width: "30%", margin: "1em"}}>
+                        Register
+                    </Button>
+
+                    <Button id="signIn" variant="info" type="submit" style={{width: "30%", margin: "1em"}}>
                         Sign in
                     </Button>
                 </div>

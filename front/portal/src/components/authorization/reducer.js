@@ -1,4 +1,10 @@
-import {loginFailed, loginLoading, loginSuccessful, logOut} from './actions'
+import {
+    actionLoginFailed,
+    actionLoginLoading,
+    actionLoginSuccessful,
+    actionLogOut, actionRegisterFailed,
+    actionRegisterLoading, actionRegisterSuccessful
+} from './actions'
 
 const initialState = {
     loading: false,
@@ -13,13 +19,17 @@ const initialState = {
 
 export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
-        case loginLoading:
+        case actionLoginLoading:
+        case actionRegisterLoading:
             return {...state, loading: true, error: undefined, authorized: false};
-        case loginFailed:
+        case actionLoginFailed:
+        case actionRegisterFailed:
             return {...state, loading: false, error: action.error, authorized: false};
-        case loginSuccessful:
+        case actionRegisterSuccessful:
+            return {...state, loading: false, error: undefined, authorized: false};
+        case actionLoginSuccessful:
             return {...state, loading: false, error: undefined, authorized: true};
-        case logOut:
+        case actionLogOut:
             return {...state, loading: false, error: undefined, authorized: false};
         default:
             return state;

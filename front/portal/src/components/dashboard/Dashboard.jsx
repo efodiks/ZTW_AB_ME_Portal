@@ -1,9 +1,9 @@
 import React from 'react';
 import PostsList from '../layout/PostsList.jsx';
 import SideBar from './SideBar.jsx';
-import {Button, Col, Row} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {doLogOut, makeAddPost, onSuccessfulAddPost} from "./actions";
+import {doLogOut, doAddPost, onSuccessfulAddPost} from "./actions";
 import {Route} from "react-router-dom";
 import AddPost from "./AddPost";
 
@@ -15,7 +15,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleAddPost: postDTO => dispatch(makeAddPost(postDTO)),
+        handleAddPost: postDTO => dispatch(doAddPost(postDTO)),
         handleLogOut: () => dispatch(doLogOut())
     }
 };

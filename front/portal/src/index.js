@@ -6,7 +6,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {loginReducer} from "./components/login/reducer";
+import {loginReducer} from "./components/authorization/reducer";
 import {connectRouter, routerMiddleware} from "connected-react-router";
 import {createBrowserHistory} from 'history'
 import {composeWithDevTools} from "redux-devtools-extension";
