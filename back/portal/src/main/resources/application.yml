@@ -1,0 +1,6 @@
+security:
+  authorizationHeaderName: Authorization
+  authoritiesKey: auth
+  token:
+    prefix: Bearer
+    validityInSeconds: 864000
