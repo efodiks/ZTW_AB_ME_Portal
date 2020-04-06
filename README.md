@@ -1,5 +1,9 @@
 # ZTW_AB_ME_Portal
 
+## Ostatnie zmiany:
+- rozwijaniem modelu domenowego i bazy danych - stworzenie modelu i tabel dla postów,
+- pracą nad niedokończonymi funkcjonalnościami - logowaniem (które zostało skończone), rejestracją (połączony front i back end), wylogowywanie (stworzone).
+
 ## Uruchamianie aplikacji frontendowej
 Wymagane jest zainstalowanie Node.js
 
