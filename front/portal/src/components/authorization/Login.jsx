@@ -2,8 +2,10 @@ import React from 'react';
 import LoginForm from './LoginForm.jsx';
 import {Col, Container, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {makeLoginRequest} from "./actions";
+import {doLoginRequest} from "./actions";
 import {Redirect} from "react-router-dom";
+import {push} from "connected-react-router";
+
 
 const mapStateToProps = state => {
     return {
@@ -13,19 +15,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleLogin: loginDTO => {
-            dispatch(makeLoginRequest(loginDTO))
-        }
+        handleLogin: loginDTO => dispatch(doLoginRequest(loginDTO)),
+        handleRegisterLink: () => dispatch(push('/register'))
     }
 };
 
-const Login = ({authorized, handleLogin}) => {
+const Login = ({authorized, handleLogin, handleRegisterLink}) => {
     return (
         authorized ? <Redirect to={"/dashboard/posts"}/> :
             <Container>
                 <Row className="justify-content-center" style={{margin: "10em 0em 10em 0em"}}>
                     <Col lg={6}>
-                        <LoginForm handleLogin={handleLogin}/>
+                        <LoginForm handleLogin={handleLogin} handleRegisterLink={handleRegisterLink}/>
                     </Col>
                 </Row>
             </Container>

@@ -1,9 +1,8 @@
 import React from 'react';
-import {ListGroup, Tab} from 'react-bootstrap';
+import {Button, ListGroup, Tab} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
-const SideBar = () => {
-
+const SideBar = ({handleLogOut}) => {
     return (
         <Tab.Container id="list-group-tabs-example" defaultActiveKey="/dashboard/posts">
             <ListGroup>
@@ -17,6 +16,9 @@ const SideBar = () => {
                         Add post
                     </ListGroup.Item>
                 </Link>
+                <Button onClick={handleLogOut}>
+                    Log out
+                </Button>
             </ListGroup>
         </Tab.Container>
     )

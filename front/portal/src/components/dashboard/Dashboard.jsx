@@ -1,9 +1,9 @@
 import React from 'react';
 import PostsList from '../layout/PostsList.jsx';
-import SideBar from '../layout/SideBar.jsx';
+import SideBar from './SideBar.jsx';
 import {Col, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {makeAddPost, onSuccessfulAddPost} from "./actions";
+import {doLogOut, doAddPost, onSuccessfulAddPost} from "./actions";
 import {Route} from "react-router-dom";
 import AddPost from "./AddPost";
 
@@ -15,16 +15,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleAddPost: postDTO => dispatch(makeAddPost(postDTO))
+        handleAddPost: postDTO => dispatch(doAddPost(postDTO)),
+        handleLogOut: () => dispatch(doLogOut())
     }
 };
 
-const Dashboard = ({posts, handleAddPost, match}) => {
+const Dashboard = ({posts, handleAddPost, handleLogOut, match}) => {
     return (
         <div>
             <Row className="w-100">
                 <Col lg="2" style={{position: "fixed"}}>
-                    <SideBar/>
+                    <SideBar handleLogOut={handleLogOut}/>
                 </Col>
                 <Col lg={{offset: 2}}>
                     <Route path={`${match.path}/posts`} render={() => <PostsList posts={posts}/>}/>
