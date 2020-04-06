@@ -1,12 +1,15 @@
 package com.abme.portal.dto;
 
 import com.abme.portal.domain.Authority;
+import com.abme.portal.domain.Post;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,4 +32,6 @@ public class UserDTO {
     private String lastName;
 
     private Set<Authority> authorities = new HashSet<>();
+
+    private List<Post> posts = new ArrayList<>();
 }
