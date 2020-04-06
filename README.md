@@ -17,11 +17,6 @@ Wymagane jest zainstalowanie jdk 11. Należy pobrać i rozpakować projekt, w ko
 ./mvnw.cmd clean install
 ./mvnw.cmd spring-boot:run
 
-### Uruchomienie
-Należy pobrać i rozpakować projekt, w konsoli przejść do folderu "portal" (ZTW_AB_ME_Portal-master/front/portal).
-
-Przed pierwszym uruchomieniem należy wprowadzić w konsoli polecenie "npm install", a następnie uruchomić przy pomocy komendy "npm start".
-
 ## Informacja o plikach
 ### Folder "front/portal/src/config"
 - zawiera konfigurację klienta http
