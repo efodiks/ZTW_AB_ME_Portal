@@ -1,4 +1,5 @@
 import {push} from "connected-react-router";
+import {logOut} from "../login/actions";
 
 export const addPostSuccess = 'dashboard/addPostSuccess';
 export const addPostFailure = 'dashboard/addPostFailure';
@@ -28,3 +29,13 @@ const onErrorAddPost = error => {
         error: error
     }
 };
+
+export function doLogOut () {
+    return dispatch => {
+        localStorage.clear();
+        dispatch({
+            type: logOut
+        });
+        dispatch(push('/'))
+    }
+}

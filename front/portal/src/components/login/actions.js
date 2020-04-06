@@ -3,6 +3,8 @@ import axios from 'axios'
 export const loginLoading = 'login/loading';
 export const loginFailed = 'login/failed';
 export const loginSuccessful = 'login/successful';
+export const logOut = 'login/logOut';
+
 
 export function makeLoginRequest(loginDTO) {
     return (dispatch) => {

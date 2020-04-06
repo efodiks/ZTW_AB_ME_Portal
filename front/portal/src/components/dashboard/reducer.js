@@ -1,4 +1,4 @@
-import {addPostFailure, addPostSuccess} from "./actions";
+import {addPostFailure, addPostSuccess, logOut} from "./actions";
 
 const initialState = {
     posts: [
