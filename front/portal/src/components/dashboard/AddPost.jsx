@@ -26,7 +26,7 @@ const AddPost = ({handleAddPost}) => {
                         handleAddPost({
                             ...postDto,
                             author: {
-                                username: "User1",
+                                //username: "User1",
                                 imgSrc: "https://images.pexels.com/photos/4015752/pexels-photo-4015752.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
                             }
                         })
@@ -36,7 +36,7 @@ const AddPost = ({handleAddPost}) => {
                                 Picture URL
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="URL" name="imgSrc" onChange={onChange}/>
+                                <Form.Control type="text" placeholder="URL" name="url" onChange={onChange}/>
                             </Col>
                         </Form.Row>
                         <Form.Row style={{marginTop: "1em", marginBottom: "1em"}}>

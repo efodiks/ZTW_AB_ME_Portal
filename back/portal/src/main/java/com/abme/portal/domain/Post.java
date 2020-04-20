@@ -1,9 +1,12 @@
 package com.abme.portal.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@Data
 @Entity
 public class Post
 {
@@ -16,4 +19,7 @@ public class Post
 
     @Size(min = 5)
     private String URL;
+
+    @Size(min = 5)
+    private String description;
 }

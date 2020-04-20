@@ -25,7 +25,7 @@ const RegistrationForm = ({handleRegister}) => {
                         <InputGroup.Prepend>
                             <InputGroup.Text id="inputGroupPrepend" style={signFormStyle}>#</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <Form.Control type="text" placeholder="Username" required/>
+                        <Form.Control type="text" placeholder="Username" required name="username" onChange={onChange}/>
                         <Form.Control.Feedback type="invalid">Please choose a username.</Form.Control.Feedback>
                     </InputGroup>
                 </Form.Group>

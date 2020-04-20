@@ -42,6 +42,9 @@ public class User implements Serializable {
     @Column(length = 50)
     private String lastName;
 
+    @Size(max = 50)
+    @Column(length = 50)
+    private String username;
 
     @JsonIgnore
     @ManyToMany
@@ -50,6 +53,7 @@ public class User implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
 }

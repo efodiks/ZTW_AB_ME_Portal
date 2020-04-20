@@ -2,8 +2,10 @@ package com.abme.portal;
 
 
 import com.abme.portal.domain.Authority;
+import com.abme.portal.dto.PostDTO;
 import com.abme.portal.dto.UserDTO;
 import com.abme.portal.repository.AuthorityRepository;
+import com.abme.portal.rest.PostController;
 import com.abme.portal.security.AuthoritiesConstants;
 import com.abme.portal.security.UserDetailsService;
 import org.springframework.boot.CommandLineRunner;
@@ -31,10 +33,12 @@ public class DataBootstrap implements CommandLineRunner {
                 .forEach(authorityRepository::save);
 
         var user1 = new UserDTO();
+        user1.setUsername("user1");
         user1.setEmail("user1@user1.com");
         user1.setPassword("user1");
 
         var user2 = new UserDTO();
+        user2.setUsername("user2");
         user2.setEmail("user2@user2.com");
         user2.setPassword("user2");
 

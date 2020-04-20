@@ -1,8 +1,18 @@
 import React from 'react';
 import {CardColumns, Container} from 'react-bootstrap';
 import PostCard from './PostCard.jsx';
+import { useEffect } from 'react';
+import {connect} from 'react-redux';
 
-const PostsList = ({posts}) => {
+const mapStateToProps = state => {
+    return {
+        posts: state.dashboardState.posts
+    }
+}
+
+const PostsList = ({posts, handleGetPosts}) => {
+
+    useEffect(handleGetPosts);
 
     return (
         <Container style={{marginTop: "1em", marginBottom: "1em"}}>
@@ -18,4 +28,4 @@ const PostsList = ({posts}) => {
     );
 };
 
-export default PostsList;
+export default connect(mapStateToProps, null)(PostsList);

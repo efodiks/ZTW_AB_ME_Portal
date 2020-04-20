@@ -43,6 +43,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         user.setEmail(userDTO.getEmail().toLowerCase());
         user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
+        user.setUsername(userDTO.getUsername());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         var authorities = new HashSet<Authority>();

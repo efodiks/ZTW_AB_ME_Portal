@@ -14,4 +14,7 @@ public class PostDTO
 
     @Size(min = 5)
     private String URL;
+
+    @Size(min = 5)
+    private String description;
 }

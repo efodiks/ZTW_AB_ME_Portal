@@ -3,24 +3,20 @@ import PostsList from '../layout/PostsList.jsx';
 import SideBar from './SideBar.jsx';
 import {Col, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {doLogOut, doAddPost, onSuccessfulAddPost} from "./actions";
+import {doLogOut, doAddPost, getAllPosts, getUserPosts} from "./actions";
 import {Route} from "react-router-dom";
 import AddPost from "./AddPost";
-
-const mapStateToProps = state => {
-    return {
-        posts: state.dashboardState.posts
-    }
-};
 
 const mapDispatchToProps = dispatch => {
     return {
         handleAddPost: postDTO => dispatch(doAddPost(postDTO)),
+        handleGetAllPosts: () => dispatch(getAllPosts()),
+        handleGetMyPosts: () => dispatch(getUserPosts()),
         handleLogOut: () => dispatch(doLogOut())
     }
 };
 
-const Dashboard = ({posts, handleAddPost, handleLogOut, match}) => {
+const Dashboard = ({handleGetMyPosts, handleAddPost, handleLogOut, match}) => {
     return (
         <div>
             <Row className="w-100">
@@ -28,7 +24,7 @@ const Dashboard = ({posts, handleAddPost, handleLogOut, match}) => {
                     <SideBar handleLogOut={handleLogOut}/>
                 </Col>
                 <Col lg={{offset: 2}}>
-                    <Route path={`${match.path}/posts`} render={() => <PostsList posts={posts}/>}/>
+                    <Route path={`${match.path}/posts`} render={() => <PostsList handleGetPosts={handleGetMyPosts}/>}/>
                     <Route path={`${match.path}/addpost`} render={() => <AddPost handleAddPost={handleAddPost}/>}/>
                 </Col>
             </Row>
@@ -36,4 +32,4 @@ const Dashboard = ({posts, handleAddPost, handleLogOut, match}) => {
     )
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(null, mapDispatchToProps)(Dashboard);
