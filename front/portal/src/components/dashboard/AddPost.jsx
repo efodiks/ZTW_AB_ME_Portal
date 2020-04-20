@@ -16,7 +16,7 @@ const AddPost = ({handleAddPost}) => {
                         handleAddPost(postDto);
                     }}>
                         <Form.Row style={{marginTop: "1em"}}>
-                            <Form.Label column lg={2}>S
+                            <Form.Label column lg={2}>
                                 Picture URL
                             </Form.Label>
                             <Col>

@@ -7,8 +7,8 @@ const PostCard = ({ author, imgSrc, description }) => {
     return (
         <Card style={{padding: "0.5em"}}>
             <div style={{display: "flex", alignItems: "center", margin: "0em 0.2em 0.4em 0.2em"}}>
-                {author.imgSrc && <Avatar
-                    imgSrc={author.imgSrc}
+                {author.url && <Avatar
+                    imgSrc={author.url}
                     size="3.5"
                 />}
                 <Card.Title className="m-2">{author.username}</Card.Title>
