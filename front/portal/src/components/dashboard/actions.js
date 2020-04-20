@@ -12,7 +12,7 @@ export const actionGetUserPostsFailure = 'dashboard/getUserPostsFailure';
 export const doAddPost = postDTO => {
     return (dispatch) => {
         api.post('posts/create', postDTO)
-            .then(response => dispatch(onSuccessfulAddPost(postDTO)),
+            .then(response => dispatch(onSuccessfulAddPost(response.data)),
                 error => onErrorAddPost(error));
     };
 };
@@ -23,6 +23,7 @@ const onSuccessfulAddPost = postDto => {
             type: actionAddPostSuccess,
             post: postDto
         })
+        dispatch(push('/dashboard/posts'))
     }
 };
 

@@ -1,38 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap';
+import {useFormState} from "../../hooks/useFormState";
 
 const AddPost = ({handleAddPost}) => {
 
-    const [postDto, setPostDto] = useState({});
-
-    const onChange = (e) => {
-        e.persist();
-        const {name, value} = e.target;
-        setPostDto((prevState => {
-            return {
-                ...prevState,
-                [name]: value
-            }
-        }))
-    };
+    const [postDto, onChange] = useFormState({});
 
     return (
         <Container>
             <Row className="justify-content-center" style={{margin: "1.5em 0em 1.5em 0em"}}>
                 <Card body className="w-100">
                     <h1>Add post</h1>
-                    <Form onSubmit={(e) => {
+                    <Form onSubmit={e => {
                         e.preventDefault();
-                        handleAddPost({
-                            ...postDto,
-                            author: {
-                                //username: "User1",
-                                imgSrc: "https://images.pexels.com/photos/4015752/pexels-photo-4015752.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                            }
-                        })
+                        handleAddPost(postDto);
                     }}>
                         <Form.Row style={{marginTop: "1em"}}>
-                            <Form.Label column lg={2}>
+                            <Form.Label column lg={2}>S
                                 Picture URL
                             </Form.Label>
                             <Col>
