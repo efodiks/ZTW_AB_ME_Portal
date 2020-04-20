@@ -34,6 +34,9 @@ public class UserDTO {
     @Size(max = 50)
     private String username;
 
+    @Size(min = 5)
+    private String URL;
+
     private Set<Authority> authorities = new HashSet<>();
 
     private List<Post> posts = new ArrayList<>();
