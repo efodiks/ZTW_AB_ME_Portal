@@ -12,15 +12,16 @@ const mapStateToProps = state => {
 
 const PostsList = ({posts, handleGetPosts}) => {
 
-    useEffect(handleGetPosts);
+    useEffect(handleGetPosts, []);
 
     return (
         <Container style={{marginTop: "1em", marginBottom: "1em"}}>
             <CardColumns>
                 {posts.map(post =>
                     (<PostCard
+                        key={post.id}
                         author={post.author}
-                        imgSrc={post.imgSrc}
+                        imgSrc={post.url}
                         description={post.description}
                     />))}
             </CardColumns>

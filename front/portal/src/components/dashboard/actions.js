@@ -51,7 +51,7 @@ export function getAllPosts () {
             .then(response => dispatch(onSuccessfulGetAllPosts(response.data)),
                error => onErrorGetAllPosts(error));
     }
-};
+}
 
 const onSuccessfulGetAllPosts = posts => {
     return {
@@ -79,7 +79,7 @@ export function getUserPosts () {
             .then(response => dispatch(onSuccessfulGetUserPosts(response.data)),
                error => onErrorGetUserPosts(error));
     }
-};
+}
 
 const onSuccessfulGetUserPosts = posts => {
     return {
