@@ -46,6 +46,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         user.setUsername(userDTO.getUsername());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setURL(userDTO.getURL());
         var authorities = new HashSet<Authority>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         user.setAuthorities(authorities);

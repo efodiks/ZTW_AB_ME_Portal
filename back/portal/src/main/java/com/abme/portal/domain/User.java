@@ -46,6 +46,9 @@ public class User implements Serializable {
     @Column(length = 50)
     private String username;
 
+    @Size(min = 5)
+    private String URL;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
