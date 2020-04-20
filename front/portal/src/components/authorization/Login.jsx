@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => {
 
 const Login = ({authorized, handleLogin, handleRegisterLink}) => {
     return (
-        authorized ? <Redirect to={"/dashboard/posts"}/> :
+        authorized ? <Redirect to={"/feed"}/> :
             <Container>
                 <Row className="justify-content-center" style={{margin: "10em 0em 10em 0em"}}>
                     <Col lg={6}>

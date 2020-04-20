@@ -12,8 +12,10 @@ const initialState = {
     error: undefined,
     user: {
         email: '',
+        username: '',
         firstName: 'Adam',
-        lastName: 'Nowak'
+        lastName: 'Nowak',
+        url: ''
     }
 };
 

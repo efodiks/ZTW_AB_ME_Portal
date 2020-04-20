@@ -76,7 +76,7 @@ const onSuccessfulGetUserPosts = posts => {
 const onErrorGetUserPosts = error => {
     console.log(error)
     return {
-        type: actionGetAllPostsFailure,
+        type: actionGetUserPostsFailure,
         error: error
     }
 }
