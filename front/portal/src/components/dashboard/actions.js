@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../config/apiConfiguration';
 import {push} from "connected-react-router";
 import {actionLogOut} from "../authorization/actions";
 
@@ -11,13 +11,7 @@ export const actionGetUserPostsFailure = 'dashboard/getUserPostsFailure';
 
 export const doAddPost = postDTO => {
     return (dispatch) => {
-        axios.interceptors.request.use(config => {
-            const token = localStorage.getItem('token');
-            config.headers.Authorization = 'Bearer' + token;
-            return config;
-        });
-
-        axios.post('http://localhost:8080/api/posts/create', postDTO)
+        api.post('posts/create', postDTO)
             .then(response => dispatch(onSuccessfulAddPost(postDTO)),
                 error => onErrorAddPost(error));
     };
@@ -33,6 +27,7 @@ const onSuccessfulAddPost = postDto => {
 };
 
 const onErrorAddPost = error => {
+    console.log(error)
     return {
         type: actionAddPostFailure,
         error: error
@@ -41,13 +36,7 @@ const onErrorAddPost = error => {
 
 export function getAllPosts () {
     return (dispatch) => {
-        axios.interceptors.request.use(config => {
-            const token = localStorage.getItem('token');
-            config.headers.Authorization = 'Bearer' + token;
-            return config;
-        });
-
-        axios.get('http://localhost:8080/api/posts')
+        api.get('posts')
             .then(response => dispatch(onSuccessfulGetAllPosts(response.data)),
                error => onErrorGetAllPosts(error));
     }
@@ -61,6 +50,7 @@ const onSuccessfulGetAllPosts = posts => {
 }
 
 const onErrorGetAllPosts = error => {
+    console.log(error)
     return {
         type: actionGetAllPostsFailure,
         error: error
@@ -69,13 +59,7 @@ const onErrorGetAllPosts = error => {
 
 export function getUserPosts () {
     return (dispatch) => {
-        axios.interceptors.request.use(config => {
-            const token = localStorage.getItem('token');
-            config.headers.Authorization = 'Bearer' + token;
-            return config;
-        });
-
-        axios.get('http://localhost:8080/api/posts/me')
+        api.get('posts/me')
             .then(response => dispatch(onSuccessfulGetUserPosts(response.data)),
                error => onErrorGetUserPosts(error));
     }
@@ -89,6 +73,7 @@ const onSuccessfulGetUserPosts = posts => {
 }
 
 const onErrorGetUserPosts = error => {
+    console.log(error)
     return {
         type: actionGetAllPostsFailure,
         error: error

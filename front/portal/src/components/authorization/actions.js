@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from '../../config/apiConfiguration'
 import {push} from 'connected-react-router'
 
 export const actionLoginLoading = 'authorization/loginLoading';
@@ -16,7 +16,7 @@ export function doLoginRequest(loginDTO) {
         dispatch({
             type: actionLoginLoading
         });
-        axios.post('http://localhost:8080/api/authenticate', loginDTO)
+        api.post('authenticate', loginDTO)
             .then(response => dispatch(doLoginSuccessful(response.data.tokenString)),
                 error => dispatch(doLoginFailed(error)))
     }
@@ -43,7 +43,7 @@ export const doRegister = userDTO => {
             type: actionRegisterLoading
         });
 
-        axios.post('http://localhost:8080/api/register', userDTO)
+        api.post('register', userDTO)
             .then(
                 ignore => dispatch(onRegisterSuccessful(userDTO)),
                 error => dispatch(doRegisterFailed(error)));
