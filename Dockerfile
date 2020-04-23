@@ -11,6 +11,6 @@ RUN sh ./mvnw clean install
 
 ARG JAR_FILE=target/*.jar
 
-COPY ${JAR_FILE} ./target/app.jar
+RUN mv ${JAR_FILE} ./target/app.jar
 
 ENTRYPOINT ["java","-jar","/app/target/app.jar"]
