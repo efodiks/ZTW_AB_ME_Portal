@@ -35,4 +35,12 @@ public class UsersController {
     public JSONObject handleUserNotFound(UserNotFoundException e) {
         return new JSONObject(Collections.singletonMap("error", e.getMessage()));
     }
+
+    @Secured(AuthoritiesConstants.USER)
+    @GetMapping("/{userId}")
+    public User getUserData(@PathVariable("userId") long userId)
+    {
+        User author = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return author;
+    }
 }

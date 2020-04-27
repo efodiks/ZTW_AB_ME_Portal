@@ -49,7 +49,7 @@ public class PostController
         return postRepository.findByAuthorNot(author.get());
     }
 
-    @GetMapping("posts/me")
+    @GetMapping("/posts/me")
     public Iterable<Post> getUsersPosts()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
