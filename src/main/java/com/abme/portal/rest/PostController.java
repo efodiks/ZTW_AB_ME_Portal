@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api")
 public class PostController
 {
     private final PostRepository postRepository;
@@ -28,7 +28,7 @@ public class PostController
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/posts/create")
     public ResponseEntity<Post> addPost(@Valid @RequestBody PostDTO postDTO)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -41,7 +41,7 @@ public class PostController
         return ResponseEntity.ok(post);
     }
 
-    @GetMapping
+    @GetMapping("/posts")
     public Iterable<Post> getPosts()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,11 +49,18 @@ public class PostController
         return postRepository.findByAuthorNot(author.get());
     }
 
-    @GetMapping("/me")
+    @GetMapping("posts/me")
     public Iterable<Post> getUsersPosts()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> author = userRepository.findOneByEmailIgnoreCase(authentication.getName());
+        return postRepository.findByAuthor(author.get());
+    }
+
+    @GetMapping("/users/{userId}/posts")
+    public Iterable<Post> getUsersPosts(@PathVariable("userId") long userId)
+    {
+        Optional<User> author = userRepository.findById(userId);
         return postRepository.findByAuthor(author.get());
     }
 }
