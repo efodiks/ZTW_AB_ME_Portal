@@ -35,6 +35,7 @@ class UsersControllerTest {
     private static final long VALID_USER_ID = 0L;
 
     private static final long INVALID_USER_ID = -1L;
+
     public static final String API_USERS_USER_ID_POSTS = "/api/users/%d/posts";
 
     private final User user = new User(VALID_USER_ID);

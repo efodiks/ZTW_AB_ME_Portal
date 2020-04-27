@@ -1,9 +1,11 @@
 # ZTW_AB_ME_Portal
 projekt frontendu: https://github.com/efodiks/ZTW_AB_ME_Portal-frontend
+aplikacja dostępna: http://64.225.92.27/
 
 ## Ostatnie zmiany:
-- rozwijaniem modelu domenowego i bazy danych - stworzenie modelu i tabel dla postów,
-- pracą nad niedokończonymi funkcjonalnościami - logowaniem (które zostało skończone), rejestracją (połączony front i back end), wylogowywanie (stworzone).
+Rozdzielenie backendu i frontendu na dwa repozytoria.
+Implementacja kontrolera “UsersController” mającego, na razie, jedną metodę zwracającą posty użytkownika wraz z testami pokrywającymi wszystkie możliwe drogi wykonania.
+Dodano możliwość wyświetlenia strony użytkownika. Nie jest to jeszcze możliwe z poziomu listy postów, jednak przeglądać stronę wybranego użytkownika można zobaczyć po wprowadzeniu adresu: http://64.225.92.27/user/1, gdzie 1 to id użytkownika. Użytkownik portalu musi być zalogowany, aby przeglądać strony innych użytkowników.
 
 ## Uruchamianie aplikacji frontendowej
 Wymagane jest zainstalowanie Node.js
