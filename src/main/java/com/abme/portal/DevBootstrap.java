@@ -9,14 +9,17 @@ import com.abme.portal.repository.PostRepository;
 import com.abme.portal.repository.UserRepository;
 import com.abme.portal.security.AuthoritiesConstants;
 import com.abme.portal.security.UserDetailsService;
-import org.springframework.boot.CommandLineRunner;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 @Component
-public class DataBootstrap implements CommandLineRunner {
+@RequiredArgsConstructor
+public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final AuthorityRepository authorityRepository;
 
@@ -26,18 +29,13 @@ public class DataBootstrap implements CommandLineRunner {
 
     private final PostRepository postRepository;
 
-    public DataBootstrap(AuthorityRepository authorityRepository, UserDetailsService userDetailsService, UserRepository userRepository, PostRepository postRepository) {
-        this.authorityRepository = authorityRepository;
-        this.userDetailsService = userDetailsService;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-    }
-
     @Override
-    public void run(String... args) {
-        bootstrapAuthorities();
-        bootstrapUsers();
-        bootStrapPosts();
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if (!authorityRepository.findAll().iterator().hasNext()) {
+            bootstrapAuthorities();
+            bootstrapUsers();
+            bootStrapPosts();
+        }
     }
 
     private void bootstrapAuthorities() {
@@ -64,25 +62,28 @@ public class DataBootstrap implements CommandLineRunner {
     }
 
     private void bootStrapPosts() {
-        var user1 = userRepository.findOneByEmailIgnoreCase("user1@user1.com").orElseThrow();
+        var user1 = userRepository.findOneByEmailIgnoreCase("user1@user1.com");
+        if (user1.isPresent()) {
+            var post1User1 = new Post();
+            post1User1.setDescription("Kitty");
+            post1User1.setURL("https://www.4yourspot.com/wp-content/uploads/2019/10/daily-cat-care-routine.jpg");
+            post1User1.setAuthor(user1.get());
 
-        var post1User1 = new Post();
-        post1User1.setDescription("Kitty");
-        post1User1.setURL("https://www.4yourspot.com/wp-content/uploads/2019/10/daily-cat-care-routine.jpg");
-        post1User1.setAuthor(user1);
+            var post2User1 = new Post();
+            post2User1.setDescription("post nr 1");
+            post2User1.setURL("https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+            post2User1.setAuthor(user1.get());
 
-        var post2User1 = new Post();
-        post2User1.setDescription("post nr 1");
-        post2User1.setURL("https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
-        post2User1.setAuthor(user1);
+            postRepository.saveAll(List.of(post1User1, post2User1));
+        }
 
-        var user2 = userRepository.findOneByEmailIgnoreCase("user2@user2.com").orElseThrow();
-
-        var post1User2 = new Post();
-        post1User2.setDescription("Another kitty");
-        post1User2.setURL("https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Calico_tabby_cat_-_Savannah.jpg/1200px-Calico_tabby_cat_-_Savannah.jpg");
-        post1User2.setAuthor(user2);
-
-        postRepository.saveAll(List.of(post1User1, post2User1, post1User2));
+        var user2 = userRepository.findOneByEmailIgnoreCase("user2@user2.com");
+        if (user2.isPresent()) {
+            var post1User2 = new Post();
+            post1User2.setDescription("Another kitty");
+            post1User2.setURL("https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Calico_tabby_cat_-_Savannah.jpg/1200px-Calico_tabby_cat_-_Savannah.jpg");
+            post1User2.setAuthor(user2.get());
+            postRepository.save(post1User2);
+        }
     }
 }

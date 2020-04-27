@@ -3,6 +3,7 @@ package com.abme.portal.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@NoArgsConstructor
 public class User implements Serializable {
 
     @EqualsAndHashCode.Include
@@ -59,4 +61,8 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
+
+    public User(long userId) {
+        this.id = userId;
+    }
 }
