@@ -44,6 +44,14 @@ docker push efodikss/portal-backend:latest
 docker pull efodikss/portal-backend
 docker run --name backend -d -p 8080:8080 -e "SECURITY_SECRET=nkHdAWNrPz6iS4skz79mnwbLaxaeW9aXrwi7ijKi/GoONIk45VjnwLFn3/voMIhYvO/nBjdnUHEs/x66Pt0/BQ==" efodikss/portal-backend
 
+## Watchtower
+docker run -d \
+    --name watchtower \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    containrrr/watchtower \
+    --cleanup \
+    --interval 30
+
 TODO: doesn't build
 ENV JAVA_OPTS = ""
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom -jar /app.jar"]

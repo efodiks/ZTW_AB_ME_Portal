@@ -56,11 +56,4 @@ public class PostController
         Optional<User> author = userRepository.findOneByEmailIgnoreCase(authentication.getName());
         return postRepository.findByAuthor(author.get());
     }
-
-    @GetMapping("/users/{userId}/posts")
-    public Iterable<Post> getUsersPosts(@PathVariable("userId") long userId)
-    {
-        Optional<User> author = userRepository.findById(userId);
-        return postRepository.findByAuthor(author.get());
-    }
 }
