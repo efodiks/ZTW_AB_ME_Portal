@@ -1,5 +1,6 @@
 package com.abme.portal.rest;
 
+import com.abme.portal.bootstrap.DevBootstrap;
 import com.abme.portal.domain.Post;
 import com.abme.portal.domain.User;
 import com.abme.portal.repository.UserRepository;
@@ -44,6 +45,9 @@ class UsersControllerTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private DevBootstrap devBootstrap;
 
     @Autowired
     private MockMvc mockMvc;
