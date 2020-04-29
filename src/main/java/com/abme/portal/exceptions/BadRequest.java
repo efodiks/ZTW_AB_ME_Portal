@@ -1,4 +1,4 @@
-package com.abme.portal.rest.exceptions;
+package com.abme.portal.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package com.abme.portal.rest.exceptions;
+package com.abme.portal.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {

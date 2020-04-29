@@ -1,4 +1,4 @@
-package com.abme.portal;
+package com.abme.portal.bootstrap;
 
 
 import com.abme.portal.domain.Authority;
@@ -29,11 +29,19 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private final PostRepository postRepository;
 
+    private final FakeUserGeneratorService fakeUserGeneratorService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (!authorityRepository.findAll().iterator().hasNext()) {
             bootstrapAuthorities();
+        }
+        if (!userRepository.findAll().iterator().hasNext()) {
             bootstrapUsers();
+            fakeUserGeneratorService.insertFakeUsers(100);
+        }
+
+        if (!postRepository.findAll().iterator().hasNext()) {
             bootStrapPosts();
         }
     }

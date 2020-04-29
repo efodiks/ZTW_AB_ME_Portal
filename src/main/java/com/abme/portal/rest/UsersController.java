@@ -3,7 +3,7 @@ package com.abme.portal.rest;
 import com.abme.portal.domain.Post;
 import com.abme.portal.domain.User;
 import com.abme.portal.repository.UserRepository;
-import com.abme.portal.rest.exceptions.UserNotFoundException;
+import com.abme.portal.exceptions.UserNotFoundException;
 import com.abme.portal.security.AuthoritiesConstants;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,6 @@ public class UsersController {
     @GetMapping("/{userId}")
     public User getUserData(@PathVariable("userId") long userId)
     {
-        User author = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        return author;
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 }
