@@ -10,6 +10,7 @@ import com.abme.portal.repository.UserRepository;
 import com.abme.portal.security.AuthoritiesConstants;
 import com.abme.portal.security.UserDetailsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -17,31 +18,36 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
+    public static final int POSTS_COUNT = 100;
+    public static final int USERS_COUNT = 10;
+
     private final AuthorityRepository authorityRepository;
-
     private final UserDetailsService userDetailsService;
-
     private final UserRepository userRepository;
-
     private final PostRepository postRepository;
-
     private final FakeUserGeneratorService fakeUserGeneratorService;
+    private final FakePostsGeneratorService fakePostsGeneratorService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (!authorityRepository.findAll().iterator().hasNext()) {
+            log.info("Bootstrapping authorities");
             bootstrapAuthorities();
         }
         if (!userRepository.findAll().iterator().hasNext()) {
             bootstrapUsers();
-            fakeUserGeneratorService.insertFakeUsers(100);
+            log.info(String.format("Bootstrapping %d users", USERS_COUNT));
+            fakeUserGeneratorService.insertFakeUsers(USERS_COUNT);
         }
 
         if (!postRepository.findAll().iterator().hasNext()) {
+            log.info(String.format("Bootstrapping %d posts", POSTS_COUNT));
+            fakePostsGeneratorService.insertPosts(POSTS_COUNT);
             bootStrapPosts();
         }
     }

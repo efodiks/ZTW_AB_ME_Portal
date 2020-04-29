@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,7 +23,7 @@ public class FakeUserGeneratorService {
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Faker faker = Faker.instance(new Locale("pl"));
+    private final Faker faker;
 
     public void insertFakeUsers(int count) {
         var userAuthoritySingleton = findAuthority();
