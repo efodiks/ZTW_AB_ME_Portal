@@ -58,6 +58,7 @@ class FakePostsGeneratorServiceTest {
         assertEquals(POSTS_COUNT, StreamSupport.stream(captor.getValue().spliterator(), false).count());
         assertThat(captor.getValue(), Every.everyItem(
                 allOf(
+                        hasProperty("uuid", notNullValue()),
                         hasProperty("author", equalTo(user)),
                         hasProperty("description", not(blankOrNullString())),
                         hasProperty("URL", not(blankOrNullString())),

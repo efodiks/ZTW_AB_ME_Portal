@@ -19,13 +19,14 @@ public class PostFacade {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public void addPostToUserWithEmail(PostDto postDto, String email) {
+    public PostDto addPostToUserWithEmail(AddPostDto addPostDto, String email) {
         var author = userRepository
                 .findOneByEmailIgnoreCase(email)
                 .orElseThrow(UserNotFoundException::new);
-        Post post = Post.from(postDto);
+        Post post = Post.from(addPostDto);
         post.setAuthor(author);
         postRepository.save(post);
+        return PostDto.fromPost(post);
     }
 
     public List<PostDto> getPostsByAuthorEmailNot(String email) {

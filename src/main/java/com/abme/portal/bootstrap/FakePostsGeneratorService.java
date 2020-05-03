@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +40,7 @@ public class FakePostsGeneratorService {
 
     private Post generatePostsFor(User author) {
         return new Post()
+                .setUuid(UUID.randomUUID())
                 .setDescription(faker.rickAndMorty().quote())
                 .setAuthor(author)
                 .setURL(faker.internet().image());

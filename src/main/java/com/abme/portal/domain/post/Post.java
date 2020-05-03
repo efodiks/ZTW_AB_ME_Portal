@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -29,20 +28,18 @@ public class Post
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 
-    @Size(min = 5)
     private String URL;
 
-    @Size(min = 5)
     @Column(length = 1000)
     private String description;
 
-    public static Post from(PostDto postDto) {
+    public static Post from(AddPostDto addPostDto) {
         return new Post(
                 null,
-                postDto.getUuid(),
+                addPostDto.getUuid(),
                 null,
-                postDto.getURL(),
-                postDto.getDescription()
+                addPostDto.getURL(),
+                addPostDto.getDescription()
         );
     }
 }

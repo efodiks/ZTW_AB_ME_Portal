@@ -1,5 +1,6 @@
 package com.abme.portal.infrastracture.rest;
 
+import com.abme.portal.domain.post.AddPostDto;
 import com.abme.portal.domain.post.PostDto;
 import com.abme.portal.domain.post.PostFacade;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,9 @@ public class PostController {
 
     @PostMapping("/posts/create")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PostDto> addPost(@Valid @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> addPost(@Valid @RequestBody AddPostDto addPostDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        postFacade.addPostToUserWithEmail(postDto, authentication.getName());
+        var postDto = postFacade.addPostToUserWithEmail(addPostDto, authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(postDto);
     }
 

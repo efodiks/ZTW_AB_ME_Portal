@@ -76,6 +76,8 @@ class FakeUserGeneratorServiceTest {
 
         assertThat(generatedUser.getRole(), notNullValue());
 
+        assertThat(generatedUser.getUuid(), notNullValue());
+
         Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
         assertThat(generatedUser.getEmail(), matchesPattern(emailPattern));
 
