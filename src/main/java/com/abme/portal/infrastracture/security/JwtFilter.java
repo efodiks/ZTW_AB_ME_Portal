@@ -1,11 +1,10 @@
-package com.abme.portal.security;
+package com.abme.portal.infrastracture.security;
 
-import com.abme.portal.config.JwtProperties;
+import com.abme.portal.config.SecurityProperties;
+import com.abme.portal.domain.authentication.JwtToken;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,11 +18,11 @@ import java.util.Optional;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final JwtProperties jwtProperties;
+    private final SecurityProperties securityProperties;
 
-    public JwtFilter(TokenProvider tokenProvider, JwtProperties jwtProperties) {
+    public JwtFilter(TokenProvider tokenProvider, SecurityProperties securityProperties) {
         this.tokenProvider = tokenProvider;
-        this.jwtProperties = jwtProperties;
+        this.securityProperties = securityProperties;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private Optional<Authentication> getAuthentication(HttpServletRequest request) {
-        var prefixedAuthorizationToken = request.getHeader(jwtProperties.getAuthorizationHeaderName());
+        var prefixedAuthorizationToken = request.getHeader(securityProperties.getAuthorizationHeaderName());
         var tokenString = resolveToken(prefixedAuthorizationToken);
         return tokenString
                 .map(JwtToken::new)
@@ -43,8 +42,8 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private Optional<String> resolveToken(String prefixedAuthorizationToken) {
-        if (StringUtils.hasText(prefixedAuthorizationToken) && prefixedAuthorizationToken.startsWith(jwtProperties.getToken().getPrefix())) {
-            var authorizationToken = prefixedAuthorizationToken.substring(jwtProperties.getToken().getPrefix().length());
+        if (StringUtils.hasText(prefixedAuthorizationToken) && prefixedAuthorizationToken.startsWith(securityProperties.getToken().getPrefix())) {
+            var authorizationToken = prefixedAuthorizationToken.substring(securityProperties.getToken().getPrefix().length());
             return StringUtils.hasText(authorizationToken) ? Optional.of(authorizationToken) : Optional.empty();
         }
         return Optional.empty();

@@ -1,14 +1,15 @@
-package com.abme.portal.domain;
+package com.abme.portal.domain.comment;
 
+import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
 
 import javax.persistence.*;
 
 @Entity
-public class PostComment
+public class Comment
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @ManyToOne

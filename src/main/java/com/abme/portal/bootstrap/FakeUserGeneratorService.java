@@ -1,16 +1,17 @@
 package com.abme.portal.bootstrap;
 
-import com.abme.portal.domain.user.Role;
-import com.abme.portal.domain.user.RoleName;
+import com.abme.portal.domain.role.Role;
+import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.repository.AuthorityRepository;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.role.RoleRepository;
+import com.abme.portal.domain.user.UserRepository;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,7 +19,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class FakeUserGeneratorService {
     private final UserRepository userRepository;
-    private final AuthorityRepository authorityRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final Faker faker;
 
@@ -32,7 +33,7 @@ public class FakeUserGeneratorService {
     }
 
     private Role userAuthority() {
-        return authorityRepository.findByName(RoleName.ROLE_USER);
+        return roleRepository.findByName(RoleName.ROLE_USER);
     }
 
     public User generateUser(Role userRole) {
@@ -46,12 +47,13 @@ public class FakeUserGeneratorService {
 
 
         return new User()
+                .setUuid(UUID.randomUUID())
                 .setEmail(email)
                 .setPasswordHash(passwordEncoder.encode(faker.internet().password()))
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setUsername(username)
-                .setURL(faker.internet().avatar())
+                .setProfilePhotoUrl(faker.internet().avatar())
                 .setRole(userRole);
     }
 }

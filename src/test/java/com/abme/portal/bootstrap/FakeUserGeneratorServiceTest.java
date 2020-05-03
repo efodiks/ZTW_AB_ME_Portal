@@ -1,10 +1,10 @@
 package com.abme.portal.bootstrap;
 
-import com.abme.portal.domain.user.Role;
-import com.abme.portal.domain.user.RoleName;
+import com.abme.portal.domain.role.Role;
+import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.repository.AuthorityRepository;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.role.RoleRepository;
+import com.abme.portal.domain.user.UserRepository;
 import com.github.javafaker.Faker;
 import org.hamcrest.core.Every;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ class FakeUserGeneratorServiceTest {
     UserRepository userRepository;
 
     @Mock
-    AuthorityRepository authorityRepository;
+    RoleRepository roleRepository;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -44,19 +44,19 @@ class FakeUserGeneratorServiceTest {
 
     @BeforeEach
     void setUp() {
-        fakeUserGeneratorService = new FakeUserGeneratorService(userRepository, authorityRepository, passwordEncoder, Faker.instance());
+        fakeUserGeneratorService = new FakeUserGeneratorService(userRepository, roleRepository, passwordEncoder, Faker.instance());
     }
 
     @Test
     void insertFakeUsers() {
         //given
-        when(authorityRepository.findByName(any())).thenReturn(new Role().setId(1L).setName(RoleName.ROLE_USER));
+        when(roleRepository.findByName(any())).thenReturn(new Role().setId(1L).setName(RoleName.ROLE_USER));
 
         //when
         fakeUserGeneratorService.insertFakeUsers(USERS_COUNT);
 
         //then
-        verify(authorityRepository, times(1)).findByName(any());
+        verify(roleRepository, times(1)).findByName(any());
 
         verify(userRepository, times(1)).saveAll(captor.capture());
 

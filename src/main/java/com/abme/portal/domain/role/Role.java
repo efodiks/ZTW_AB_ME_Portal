@@ -1,4 +1,4 @@
-package com.abme.portal.domain.user;
+package com.abme.portal.domain.role;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

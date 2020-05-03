@@ -1,64 +1,56 @@
 package com.abme.portal.domain.user;
 
-import com.abme.portal.domain.Post;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.role.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Data
-@Accessors(chain=true)
+@Accessors(chain = true)
 @EqualsAndHashCode(of = {"id"})
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Email
-    @Size(min = 5, max = 254)
-    @Column(length = 254, unique = true)
+    @Column(unique = true, updatable = false)
+    private UUID uuid;
+
+    @Column(unique = true)
     private String email;
 
-    @JsonIgnore
-    @NotNull
-    @Size(min = 60, max = 60)
     @Column(length = 60, nullable = false)
     private String passwordHash;
 
-    @Size(max = 50)
     @Column(length = 50)
     private String firstName;
 
-    @Size(max = 50)
     @Column(length = 50)
     private String lastName;
 
-    @Size(max = 50)
     @Column(length = 50)
     private String username;
 
-    @Size(min = 5)
-    private String URL;
+    private String profilePhotoUrl;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "author")
-    private List<Post> posts;
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<Post> posts;
 
     public User(long userId) {
         this.id = userId;

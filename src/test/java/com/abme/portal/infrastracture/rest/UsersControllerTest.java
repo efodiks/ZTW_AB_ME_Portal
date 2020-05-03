@@ -1,9 +1,9 @@
-package com.abme.portal.rest;
+package com.abme.portal.infrastracture.rest;
 
 import com.abme.portal.bootstrap.DevBootstrap;
-import com.abme.portal.domain.Post;
+import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.user.UserRepository;
 import com.abme.portal.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,8 +18,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.NestedServletException;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,15 +34,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UsersControllerTest {
 
-    private static final long VALID_USER_ID = 0L;
+    private static final UUID VALID_USER_ID = UUID.randomUUID();
 
-    private static final long INVALID_USER_ID = -1L;
+    private static final UUID INVALID_USER_ID = UUID.randomUUID();
 
-    public static final String API_USERS_USER_ID_POSTS = "/api/users/%d/posts";
+    public static final String API_USERS_USER_ID_POSTS = "/api/users/%s/posts";
 
-    private final User user = new User(VALID_USER_ID);
+    private final User user = new User(0L).setUuid(VALID_USER_ID);
 
-    private List<Post> posts;
+    private Set<Post> posts;
 
     @MockBean
     private UserRepository userRepository;
@@ -56,8 +57,8 @@ class UsersControllerTest {
     private void mockOutput() {
         initializePosts();
         user.setPosts(posts);
-        when(userRepository.findById(VALID_USER_ID)).thenReturn(Optional.of(user));
-        when(userRepository.findById(INVALID_USER_ID)).thenReturn(Optional.empty());
+        when(userRepository.findOneByUuid(VALID_USER_ID)).thenReturn(Optional.of(user));
+        when(userRepository.findOneByUuid(INVALID_USER_ID)).thenReturn(Optional.empty());
     }
 
     private void initializePosts() {
@@ -65,11 +66,12 @@ class UsersControllerTest {
                 .map(id -> {
                     final Post post = new Post();
                     post.setId(id);
+                    post.setUuid(UUID.randomUUID());
                     post.setAuthor(user);
                     post.setDescription("Post" + id);
                     return post;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Test
@@ -93,11 +95,14 @@ class UsersControllerTest {
     @WithMockUser
     @Test
     void expect200OkAndResponseBodyWhenAuthorizedAndIdValid() throws Exception {
+        var postsIterator = posts.iterator();
+        var firstPost = postsIterator.next();
+        var secondPost = postsIterator.next();
         mockMvc
                 .perform(get(String.format(API_USERS_USER_ID_POSTS, VALID_USER_ID)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id", equalTo(posts.get(0).getId().intValue())))
-                .andExpect(jsonPath("$[1].id", equalTo(posts.get(1).getId().intValue())));
+                .andExpect(jsonPath("$[0].uuid", equalTo(firstPost.getUuid().toString())))
+                .andExpect(jsonPath("$[1].uuid", equalTo(secondPost.getUuid().toString())));
     }
 }

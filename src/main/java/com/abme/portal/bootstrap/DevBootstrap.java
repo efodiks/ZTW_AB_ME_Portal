@@ -1,14 +1,15 @@
 package com.abme.portal.bootstrap;
 
 
-import com.abme.portal.domain.Post;
-import com.abme.portal.domain.user.Role;
-import com.abme.portal.domain.user.RoleName;
-import com.abme.portal.dto.UserDTO;
-import com.abme.portal.repository.AuthorityRepository;
-import com.abme.portal.repository.PostRepository;
-import com.abme.portal.repository.UserRepository;
-import com.abme.portal.security.CustomUserDetailsService;
+import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.role.Role;
+import com.abme.portal.domain.role.RoleName;
+import com.abme.portal.domain.user.UserDto;
+import com.abme.portal.domain.role.RoleRepository;
+import com.abme.portal.domain.post.PostRepository;
+import com.abme.portal.domain.user.UserRegisterDto;
+import com.abme.portal.domain.user.UserRepository;
+import com.abme.portal.infrastracture.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -16,6 +17,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -25,7 +27,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public static final int POSTS_COUNT = 100;
     public static final int USERS_COUNT = 10;
 
-    private final AuthorityRepository authorityRepository;
+    private final RoleRepository roleRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -34,8 +36,8 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        if(authorityRepository.findAll().isEmpty()) {
-            authorityRepository.saveAll(List.of(
+        if(roleRepository.findAll().isEmpty()) {
+            roleRepository.saveAll(List.of(
                     new Role(RoleName.ROLE_USER),
                     new Role(RoleName.ROLE_ADMIN)
             ));
@@ -56,17 +58,25 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
 
     private void bootstrapUsers() {
-        var user1 = new UserDTO();
-        user1.setUsername("user1");
-        user1.setEmail("user1@user1.com");
-        user1.setPassword("user1");
-        user1.setURL("https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+        var user1 = new UserRegisterDto(
+                UUID.randomUUID(),
+                "user1@user1.com",
+                "",
+                "",
+                "user1",
+                "user1",
+                "https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+        );
 
-        var user2 = new UserDTO();
-        user2.setUsername("user2");
-        user2.setEmail("user2@user2.com");
-        user2.setPassword("user2");
-        user2.setURL("https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+        var user2 = new UserRegisterDto(
+                UUID.randomUUID(),
+                "user2@user2.com",
+                "",
+                "",
+                "user2",
+                "user2",
+                "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+        );
 
         customUserDetailsService.registerUser(user1);
         customUserDetailsService.registerUser(user2);

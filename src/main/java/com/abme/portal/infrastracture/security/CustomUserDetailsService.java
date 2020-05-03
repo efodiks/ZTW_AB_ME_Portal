@@ -1,10 +1,12 @@
-package com.abme.portal.security;
+package com.abme.portal.infrastracture.security;
 
-import com.abme.portal.domain.user.RoleName;
+import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.dto.UserDTO;
-import com.abme.portal.repository.AuthorityRepository;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.user.UserDto;
+import com.abme.portal.domain.role.RoleRepository;
+import com.abme.portal.domain.user.UserRegisterDto;
+import com.abme.portal.domain.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,37 +15,37 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
-
-    private final AuthorityRepository authorityRepository;
-
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public CustomUserDetailsService(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.authorityRepository = authorityRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Transactional
-    public User registerUser(UserDTO userDTO) {
-        var user = new User()
-                .setEmail(userDTO.getEmail().toLowerCase())
-                .setPasswordHash(passwordEncoder.encode(userDTO.getPassword()))
-                .setUsername(userDTO.getUsername())
-                .setFirstName(userDTO.getFirstName())
-                .setLastName(userDTO.getLastName())
-                .setURL(userDTO.getURL());
-        var authority = authorityRepository.findByName(RoleName.ROLE_USER);
+    public UserDto registerUser(UserRegisterDto userRegister) {
+        var authority = roleRepository.findByName(RoleName.ROLE_USER);
 
-        user.setRole(authority);
+        var user = new User(
+                null,
+                userRegister.getUuid(),
+                userRegister.getEmail(),
+                passwordEncoder.encode(userRegister.getPassword()),
+                userRegister.getFirstName(),
+                userRegister.getLastName(),
+                userRegister.getUsername(),
+                userRegister.getProfilePhotoUrl(),
+                authority,
+                Set.of()
+        );
 
         userRepository.save(user);
-        return user;
+        return UserDto.from(user);
     }
 
     @Override

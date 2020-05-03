@@ -1,15 +1,18 @@
-package com.abme.portal.rest;
+package com.abme.portal.infrastracture.rest;
 
-import com.abme.portal.domain.Post;
+import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.post.PostDto;
 import com.abme.portal.domain.user.User;
 import com.abme.portal.exceptions.UserNotFoundException;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.user.UserRepository;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/users")
 @RestController
@@ -22,11 +25,11 @@ public class UsersController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{userId}/posts")
-    public Iterable<Post> getUsersPosts(@PathVariable("userId") long userId)
+    @GetMapping("/{userUuid}/posts")
+    public Iterable<PostDto> getUsersPosts(@PathVariable("userUuid") UUID userUuid)
     {
-        User author = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        return author.getPosts();
+        User author = userRepository.findOneByUuid(userUuid).orElseThrow(UserNotFoundException::new);
+        return author.getPosts().stream().map(PostDto::fromPost).collect(Collectors.toList());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -36,9 +39,9 @@ public class UsersController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{userId}")
-    public User getUserData(@PathVariable("userId") long userId)
+    @GetMapping("/{userUuid}")
+    public User getUserData(@PathVariable("userUuid") UUID userUuid)
     {
-        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return userRepository.findOneByUuid(userUuid).orElseThrow(UserNotFoundException::new);
     }
 }

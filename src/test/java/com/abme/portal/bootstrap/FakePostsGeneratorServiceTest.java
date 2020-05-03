@@ -1,9 +1,9 @@
 package com.abme.portal.bootstrap;
 
-import com.abme.portal.domain.Post;
+import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.repository.PostRepository;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.post.PostRepository;
+import com.abme.portal.domain.user.UserRepository;
 import com.github.javafaker.Faker;
 import org.hamcrest.core.Every;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.abme.portal.security;
+package com.abme.portal.domain.authentication;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

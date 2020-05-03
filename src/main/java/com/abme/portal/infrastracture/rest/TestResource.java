@@ -1,4 +1,4 @@
-package com.abme.portal.rest;
+package com.abme.portal.infrastracture.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

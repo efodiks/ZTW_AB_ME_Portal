@@ -1,4 +1,4 @@
-package com.abme.portal.dto;
+package com.abme.portal.domain.authentication;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class LoginDTO {
+public class LoginDto {
 
     @Email
     @NotNull

@@ -1,7 +1,7 @@
-package com.abme.portal.security;
+package com.abme.portal.infrastracture.security;
 
-import com.abme.portal.config.JwtProperties;
-import com.abme.portal.domain.user.RoleName;
+import com.abme.portal.config.SecurityProperties;
+import com.abme.portal.domain.role.RoleName;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,7 +32,7 @@ class TokenProviderTest {
     JwtParser jwtParser;
 
     @Mock
-    JwtProperties jwtProperties;
+    SecurityProperties securityProperties;
 
     @BeforeEach
     void setUp() {
@@ -44,12 +44,12 @@ class TokenProviderTest {
 
         initJwtProperties();
 
-        tokenProvider = new TokenProvider(jwtParser, key, jwtProperties);
+        tokenProvider = new TokenProvider(jwtParser, key, securityProperties);
     }
 
     private void initJwtProperties() {
-        doReturn(new JwtProperties.Token("Bearer ", 864_000)).when(jwtProperties).getToken();
-        doReturn("auth").when(jwtProperties).getAuthoritiesKey();
+        doReturn(new SecurityProperties.Token("Bearer ", 864_000)).when(securityProperties).getToken();
+        doReturn("auth").when(securityProperties).getAuthoritiesKey();
     }
 
 

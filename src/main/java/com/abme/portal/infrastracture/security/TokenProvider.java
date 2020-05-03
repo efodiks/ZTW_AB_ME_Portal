@@ -1,6 +1,7 @@
-package com.abme.portal.security;
+package com.abme.portal.infrastracture.security;
 
-import com.abme.portal.config.JwtProperties;
+import com.abme.portal.config.SecurityProperties;
+import com.abme.portal.domain.authentication.JwtToken;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,15 +24,15 @@ public class TokenProvider {
 
     Key key;
 
-    JwtProperties jwtProperties;
+    SecurityProperties securityProperties;
 
     private final long tokenValidityInMilliseconds;
 
-    public TokenProvider(JwtParser jwtParser, Key key, JwtProperties jwtProperties) {
+    public TokenProvider(JwtParser jwtParser, Key key, SecurityProperties securityProperties) {
         this.jwtParser = jwtParser;
         this.key = key;
-        this.jwtProperties = jwtProperties;
-        tokenValidityInMilliseconds = jwtProperties.getToken().getValidityInSeconds() * 1000;
+        this.securityProperties = securityProperties;
+        tokenValidityInMilliseconds = securityProperties.getToken().getValidityInSeconds() * 1000;
     }
 
     public JwtToken createToken(Authentication authentication, Date now) {
@@ -45,7 +46,7 @@ public class TokenProvider {
 
         String jwtString = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim(jwtProperties.getAuthoritiesKey(), authorities)
+                .claim(securityProperties.getAuthoritiesKey(), authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(expiresAt)
                 .compact();
@@ -66,7 +67,7 @@ public class TokenProvider {
         Jws<Claims> jws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token.getTokenString());
         Claims claims = jws.getBody();
         var authorities = Arrays.stream(
-                claims.get(jwtProperties.getAuthoritiesKey())
+                claims.get(securityProperties.getAuthoritiesKey())
                         .toString()
                         .split(","))
                 .map(SimpleGrantedAuthority::new)
