@@ -1,14 +1,11 @@
 package com.abme.portal.bootstrap;
 
 import com.abme.portal.domain.Post;
-import com.abme.portal.domain.User;
+import com.abme.portal.domain.user.User;
 import com.abme.portal.repository.PostRepository;
 import com.abme.portal.repository.UserRepository;
 import com.github.javafaker.Faker;
-import org.assertj.core.api.Assertions;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.Every;
-import org.hibernate.validator.internal.constraintvalidators.hv.URLValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

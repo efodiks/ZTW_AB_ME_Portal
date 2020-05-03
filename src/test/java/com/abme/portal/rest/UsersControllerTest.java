@@ -2,7 +2,7 @@ package com.abme.portal.rest;
 
 import com.abme.portal.bootstrap.DevBootstrap;
 import com.abme.portal.domain.Post;
-import com.abme.portal.domain.User;
+import com.abme.portal.domain.user.User;
 import com.abme.portal.repository.UserRepository;
 import com.abme.portal.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;

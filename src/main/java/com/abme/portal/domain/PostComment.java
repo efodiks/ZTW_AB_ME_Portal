@@ -1,5 +1,7 @@
 package com.abme.portal.domain;
 
+import com.abme.portal.domain.user.User;
+
 import javax.persistence.*;
 
 @Entity

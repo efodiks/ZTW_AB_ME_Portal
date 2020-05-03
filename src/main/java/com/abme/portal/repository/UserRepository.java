@@ -1,6 +1,6 @@
 package com.abme.portal.repository;
 
-import com.abme.portal.domain.User;
+import com.abme.portal.domain.user.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

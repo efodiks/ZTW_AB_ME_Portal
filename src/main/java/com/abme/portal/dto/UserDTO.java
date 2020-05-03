@@ -1,6 +1,6 @@
 package com.abme.portal.dto;
 
-import com.abme.portal.domain.Authority;
+import com.abme.portal.domain.user.Role;
 import com.abme.portal.domain.Post;
 import lombok.Data;
 
@@ -37,7 +37,7 @@ public class UserDTO {
     @Size(min = 5)
     private String URL;
 
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Role> authorities = new HashSet<>();
 
     private List<Post> posts = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.abme.portal.security;
 
 import com.abme.portal.config.JwtProperties;
+import com.abme.portal.domain.user.RoleName;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -60,7 +61,7 @@ class TokenProviderTest {
         var calendar = new GregorianCalendar(2020, Calendar.JANUARY, 1, 12, 0, 0);
         var date = Date.from(calendar.toZonedDateTime().toInstant());
 
-        var authorities = List.of(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        var authorities = List.of(new SimpleGrantedAuthority(RoleName.ROLE_USER.name()));
         doReturn(authorities).when(authentication).getAuthorities();
 
         var name = "John Doe";

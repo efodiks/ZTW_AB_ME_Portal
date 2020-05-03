@@ -1,11 +1,11 @@
 package com.abme.portal.domain;
 
+import com.abme.portal.domain.user.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Data
 @Accessors(chain = true)

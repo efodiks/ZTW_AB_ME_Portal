@@ -1,14 +1,13 @@
 package com.abme.portal.bootstrap;
 
 import com.abme.portal.domain.Post;
-import com.abme.portal.domain.User;
+import com.abme.portal.domain.user.User;
 import com.abme.portal.repository.PostRepository;
 import com.abme.portal.repository.UserRepository;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

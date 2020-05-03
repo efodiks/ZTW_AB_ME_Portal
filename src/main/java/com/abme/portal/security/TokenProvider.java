@@ -2,6 +2,7 @@ package com.abme.portal.security;
 
 import com.abme.portal.config.JwtProperties;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class TokenProvider {
 
@@ -23,7 +25,7 @@ public class TokenProvider {
 
     JwtProperties jwtProperties;
 
-    private long tokenValidityInMilliseconds;
+    private final long tokenValidityInMilliseconds;
 
     public TokenProvider(JwtParser jwtParser, Key key, JwtProperties jwtProperties) {
         this.jwtParser = jwtParser;
@@ -55,6 +57,7 @@ public class TokenProvider {
         try {
             return Optional.of(tryGetAuthentication(token));
         } catch (JwtException | IllegalArgumentException e) {
+            log.error(String.format("Couldn't get authorization from token %s", token));
             return Optional.empty();
         }
     }

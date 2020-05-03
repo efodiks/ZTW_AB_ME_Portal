@@ -1,6 +1,6 @@
 package com.abme.portal.rest;
 
-import com.abme.portal.domain.User;
+import com.abme.portal.domain.user.User;
 import com.abme.portal.dto.LoginDTO;
 import com.abme.portal.dto.UserDTO;
 import com.abme.portal.repository.UserRepository;
@@ -8,7 +8,7 @@ import com.abme.portal.exceptions.BadRequest;
 import com.abme.portal.exceptions.EmailAlreadyUsedException;
 import com.abme.portal.security.JwtToken;
 import com.abme.portal.security.TokenProvider;
-import com.abme.portal.security.UserDetailsService;
+import com.abme.portal.security.CustomUserDetailsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,13 +33,13 @@ public class AuthenticationController {
 
     private final UserRepository userRepository;
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserRepository userRepository, UserDetailsService userDetailsService) {
+    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserRepository userRepository, CustomUserDetailsService customUserDetailsService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userRepository = userRepository;
-        this.userDetailsService = userDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @PostMapping("/authenticate")
@@ -58,7 +58,7 @@ public class AuthenticationController {
         if (userDTO.getId() != null) throw new BadRequest("User cannot already have and ID");
         if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent())
             throw new EmailAlreadyUsedException();
-        var user = userDetailsService.registerUser(userDTO);
+        var user = customUserDetailsService.registerUser(userDTO);
         return ResponseEntity.created(new URI("/api/users/" + user.getId())).body(user);
     }
 }

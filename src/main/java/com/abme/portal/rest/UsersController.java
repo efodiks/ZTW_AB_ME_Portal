@@ -1,13 +1,12 @@
 package com.abme.portal.rest;
 
 import com.abme.portal.domain.Post;
-import com.abme.portal.domain.User;
-import com.abme.portal.repository.UserRepository;
+import com.abme.portal.domain.user.User;
 import com.abme.portal.exceptions.UserNotFoundException;
-import com.abme.portal.security.AuthoritiesConstants;
+import com.abme.portal.repository.UserRepository;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -22,7 +21,7 @@ public class UsersController {
         this.userRepository = userRepository;
     }
 
-    @Secured(AuthoritiesConstants.USER)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{userId}/posts")
     public Iterable<Post> getUsersPosts(@PathVariable("userId") long userId)
     {
@@ -36,7 +35,7 @@ public class UsersController {
         return new JSONObject(Collections.singletonMap("error", e.getMessage()));
     }
 
-    @Secured(AuthoritiesConstants.USER)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{userId}")
     public User getUserData(@PathVariable("userId") long userId)
     {

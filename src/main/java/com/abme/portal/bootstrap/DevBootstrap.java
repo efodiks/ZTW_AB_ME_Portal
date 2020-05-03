@@ -1,14 +1,14 @@
 package com.abme.portal.bootstrap;
 
 
-import com.abme.portal.domain.Authority;
 import com.abme.portal.domain.Post;
+import com.abme.portal.domain.user.Role;
+import com.abme.portal.domain.user.RoleName;
 import com.abme.portal.dto.UserDTO;
 import com.abme.portal.repository.AuthorityRepository;
 import com.abme.portal.repository.PostRepository;
 import com.abme.portal.repository.UserRepository;
-import com.abme.portal.security.AuthoritiesConstants;
-import com.abme.portal.security.UserDetailsService;
+import com.abme.portal.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -16,7 +16,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Slf4j
 @Component
@@ -27,7 +26,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public static final int USERS_COUNT = 10;
 
     private final AuthorityRepository authorityRepository;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final FakeUserGeneratorService fakeUserGeneratorService;
@@ -35,10 +34,13 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        if (!authorityRepository.findAll().iterator().hasNext()) {
-            log.info("Bootstrapping authorities");
-            bootstrapAuthorities();
+        if(authorityRepository.findAll().isEmpty()) {
+            authorityRepository.saveAll(List.of(
+                    new Role(RoleName.ROLE_USER),
+                    new Role(RoleName.ROLE_ADMIN)
+            ));
         }
+
         if (!userRepository.findAll().iterator().hasNext()) {
             bootstrapUsers();
             log.info(String.format("Bootstrapping %d users", USERS_COUNT));
@@ -52,11 +54,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         }
     }
 
-    private void bootstrapAuthorities() {
-        Stream.of(AuthoritiesConstants.ANONYMOUS, AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)
-                .map(Authority::new)
-                .forEach(authorityRepository::save);
-    }
 
     private void bootstrapUsers() {
         var user1 = new UserDTO();
@@ -71,8 +68,8 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         user2.setPassword("user2");
         user2.setURL("https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
 
-        userDetailsService.registerUser(user1);
-        userDetailsService.registerUser(user2);
+        customUserDetailsService.registerUser(user1);
+        customUserDetailsService.registerUser(user2);
     }
 
     private void bootStrapPosts() {
