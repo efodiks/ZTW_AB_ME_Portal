@@ -83,13 +83,10 @@ class UsersControllerTest {
 
     @WithMockUser
     @Test
-    void expect400BadRequestWhenUserIdIsNotValid() {
-        Exception thrown = Assertions.assertThrows(
-                NestedServletException.class,
-                () -> mockMvc
-                        .perform(get(String.format(API_USERS_USER_ID_POSTS, INVALID_USER_ID)))
-        );
-        Assertions.assertEquals(UserNotFoundException.class, thrown.getCause().getClass());
+    void expect400BadRequestWhenUserIdIsNotValid() throws Exception {
+        mockMvc
+                .perform(get(String.format(API_USERS_USER_ID_POSTS, INVALID_USER_ID)))
+                .andExpect(status().isBadRequest());
     }
 
     @WithMockUser
