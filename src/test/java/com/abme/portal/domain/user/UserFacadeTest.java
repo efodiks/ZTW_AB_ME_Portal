@@ -46,8 +46,18 @@ class UserFacadeTest {
     void setUp() {
         userFacade = new UserFacade(userRepository, postRepository);
         postSet = Set.of(
-                new Post(1, POST_1_UUID),
-                new Post(2, POST_2_UUID)
+                new Post(1L,
+                        POST_1_UUID,
+                        user1,
+                        "url1",
+                        "description1",
+                        new HashSet<>()),
+                new Post(2L,
+                        POST_2_UUID,
+                        user1,
+                        "url2",
+                        "description2",
+                        new HashSet<>())
         );
         user1 = new User(
                 1L,
