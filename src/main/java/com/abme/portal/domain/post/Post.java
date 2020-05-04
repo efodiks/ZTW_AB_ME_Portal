@@ -1,5 +1,6 @@
 package com.abme.portal.domain.post;
 
+import com.abme.portal.domain.label.Label;
 import com.abme.portal.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -33,6 +36,10 @@ public class Post
     @Column(length = 1000)
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @ManyToMany
+    private Set<Label> labels;
+
     public Post(long id, UUID uuid) {
         this.id = id;
         this.uuid = uuid;
@@ -44,7 +51,8 @@ public class Post
                 addPostDto.getUuid(),
                 null,
                 addPostDto.getURL(),
-                addPostDto.getDescription()
+                addPostDto.getDescription(),
+                new HashSet<>()
         );
     }
 }

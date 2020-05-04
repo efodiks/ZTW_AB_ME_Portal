@@ -1,9 +1,7 @@
 package com.abme.portal.infrastracture.rest;
 
 import com.abme.portal.bootstrap.DevBootstrap;
-import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.post.PostDto;
-import com.abme.portal.domain.user.User;
 import com.abme.portal.domain.user.UserFacade;
 import com.abme.portal.domain.user.UserStubDto;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +20,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.in;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -78,7 +75,8 @@ class UsersControllerTest {
                         id,
                         "",
                         "Post" + id,
-                        user
+                        user,
+                        Set.of()
                 ))
                 .collect(Collectors.toSet());
     }

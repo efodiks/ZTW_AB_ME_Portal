@@ -1,5 +1,8 @@
 package com.abme.portal.bootstrap;
 
+import com.abme.portal.domain.label.Label;
+import com.abme.portal.domain.label.LabelName;
+import com.abme.portal.domain.label.LabelRepository;
 import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
 import com.abme.portal.domain.post.PostRepository;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -34,12 +38,15 @@ class FakePostsGeneratorServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    LabelRepository labelRepository;
+
     @Captor
     ArgumentCaptor<Iterable<Post>> captor;
 
     @BeforeEach
     void setUp() {
-        fakePostsGeneratorService = new FakePostsGeneratorService(postRepository, userRepository, Faker.instance());
+        fakePostsGeneratorService = new FakePostsGeneratorService(postRepository, userRepository, labelRepository, Faker.instance());
     }
 
 
@@ -47,6 +54,7 @@ class FakePostsGeneratorServiceTest {
     void insertPosts() {
         //given
         when(userRepository.findAll()).thenReturn(List.of(user));
+        when(labelRepository.findAll()).thenReturn(Arrays.asList(new Label(1L, LabelName.ANIMALS), new Label(2L, LabelName.DOGS)));
 
         //when
         fakePostsGeneratorService.insertPosts(POSTS_COUNT);
@@ -58,6 +66,7 @@ class FakePostsGeneratorServiceTest {
         assertEquals(POSTS_COUNT, StreamSupport.stream(captor.getValue().spliterator(), false).count());
         assertThat(captor.getValue(), Every.everyItem(
                 allOf(
+                        hasProperty("labels", not(empty())),
                         hasProperty("uuid", notNullValue()),
                         hasProperty("author", equalTo(user)),
                         hasProperty("description", not(blankOrNullString())),
