@@ -33,6 +33,11 @@ public class Post
     @Column(length = 1000)
     private String description;
 
+    public Post(long id, UUID uuid) {
+        this.id = id;
+        this.uuid = uuid;
+    }
+
     public static Post from(AddPostDto addPostDto) {
         return new Post(
                 null,

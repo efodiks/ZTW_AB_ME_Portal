@@ -18,6 +18,7 @@ public class UserDto {
     private UUID uuid;
     private String firstName;
     private String lastName;
+    private String email;
     private String username;
     private String profilePhotoUrl;
 
@@ -30,6 +31,7 @@ public class UserDto {
                 user.getUuid(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getEmail(),
                 user.getUsername(),
                 user.getProfilePhotoUrl(),
                 SetExtension.map(user.getPosts(), PostDto::fromPost),

@@ -25,7 +25,7 @@ public class PostDto {
                 post.getUuid(),
                 post.getURL(),
                 post.getDescription(),
-                UserStubDto.fromUser(post.getAuthor())
+                post.getAuthor() != null ? UserStubDto.fromUser(post.getAuthor()) : null
         );
     }
 }
