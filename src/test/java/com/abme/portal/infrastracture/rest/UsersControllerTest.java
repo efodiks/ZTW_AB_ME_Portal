@@ -4,8 +4,6 @@ import com.abme.portal.bootstrap.DevBootstrap;
 import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
 import com.abme.portal.domain.user.UserRepository;
-import com.abme.portal.exceptions.UserNotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.NestedServletException;
 
 import java.util.Optional;
 import java.util.Set;

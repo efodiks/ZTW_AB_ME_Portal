@@ -1,6 +1,6 @@
 package com.abme.portal.infrastracture.rest;
 
-import com.abme.portal.domain.user.UserDto;
+import com.abme.portal.domain.user.UserStubDto;
 import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.authentication.LoginDto;
 import com.abme.portal.infrastracture.security.CustomUserDetailsService;
@@ -49,7 +49,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) throws URISyntaxException {
+    public ResponseEntity<UserStubDto> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) throws URISyntaxException {
         var userDto = customUserDetailsService.registerUser(userRegisterDto);
         return ResponseEntity.created(new URI("/api/users/" + userDto.getUuid())).body(userDto);
     }

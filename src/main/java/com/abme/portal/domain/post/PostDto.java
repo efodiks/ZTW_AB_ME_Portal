@@ -1,6 +1,6 @@
 package com.abme.portal.domain.post;
 
-import com.abme.portal.domain.user.UserDto;
+import com.abme.portal.domain.user.UserStubDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,14 +18,14 @@ public class PostDto {
 
     private String description;
 
-    UserDto author;
+    UserStubDto author;
 
     public static PostDto fromPost(Post post) {
         return new PostDto(
                 post.getUuid(),
                 post.getURL(),
                 post.getDescription(),
-                UserDto.from(post.getAuthor())
+                UserStubDto.fromUser(post.getAuthor())
         );
     }
 }

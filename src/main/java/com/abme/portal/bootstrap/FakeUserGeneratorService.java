@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +22,11 @@ public class FakeUserGeneratorService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final Faker faker;
+    private final Random random = new Random();
+
+    private final int FOLLOWING_LOWER_BOUND = 5;
+    private final int FOLLOWING_UPPER_BOUND_EXCLUSIVE = 12;
+
 
     public void insertFakeUsers(int count) {
         var userAuthority = userAuthority();
@@ -29,7 +34,9 @@ public class FakeUserGeneratorService {
                 .generate(() -> generateUser(userAuthority))
                 .limit(count)
                 .collect(Collectors.toList());
-         userRepository.saveAll(users);
+        userRepository.saveAll(users);
+        fillInFollowingAndFollowedByFor(users);
+        userRepository.saveAll(users);
     }
 
     private Role userAuthority() {
@@ -42,7 +49,7 @@ public class FakeUserGeneratorService {
         var lastName = faker.name().lastName();
         var lastNameLowerCaseStripped = StringUtils.stripAccents(lastName).toLowerCase();
 
-        var username = firstNameLowerCaseStripped + "." + lastNameLowerCaseStripped  ;
+        var username = firstNameLowerCaseStripped + "." + lastNameLowerCaseStripped;
         var email = username + "@example.com";
 
 
@@ -55,5 +62,22 @@ public class FakeUserGeneratorService {
                 .setUsername(username)
                 .setProfilePhotoUrl(faker.internet().avatar())
                 .setRole(userRole);
+    }
+
+    public void fillInFollowingAndFollowedByFor(List<User> users) {
+        var usersList = new ArrayList<>(users);
+
+        users.forEach(user -> user.setFollowing(randomUsers(usersList, user)));
+    }
+
+    private Set<User> randomUsers(List<User> usersList, User target) {
+        Collections.shuffle(usersList, random);
+        var numberOfUsers = random.nextInt(FOLLOWING_UPPER_BOUND_EXCLUSIVE) + FOLLOWING_LOWER_BOUND;
+        var set = usersList
+                .stream()
+                .limit(numberOfUsers)
+                .collect(Collectors.toSet());
+        set.remove(target);
+        return set;
     }
 }

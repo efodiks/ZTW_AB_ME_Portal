@@ -52,6 +52,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Post> posts;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> following;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "following")
+    private Set<User> followedBy;
+
     public User(long userId) {
         this.id = userId;
     }

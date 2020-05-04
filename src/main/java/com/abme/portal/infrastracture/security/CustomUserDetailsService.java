@@ -2,7 +2,7 @@ package com.abme.portal.infrastracture.security;
 
 import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.domain.user.UserDto;
+import com.abme.portal.domain.user.UserStubDto;
 import com.abme.portal.domain.role.RoleRepository;
 import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.user.UserRepository;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +26,7 @@ public class CustomUserDetailsService implements org.springframework.security.co
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDto registerUser(UserRegisterDto userRegister) {
+    public UserStubDto registerUser(UserRegisterDto userRegister) {
         var authority = roleRepository.findByName(RoleName.ROLE_USER);
 
         var user = new User(
@@ -41,11 +39,13 @@ public class CustomUserDetailsService implements org.springframework.security.co
                 userRegister.getUsername(),
                 userRegister.getProfilePhotoUrl(),
                 authority,
+                Set.of(),
+                Set.of(),
                 Set.of()
         );
 
         userRepository.save(user);
-        return UserDto.from(user);
+        return UserStubDto.fromUser(user);
     }
 
     @Override

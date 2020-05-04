@@ -4,7 +4,6 @@ package com.abme.portal.bootstrap;
 import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.role.Role;
 import com.abme.portal.domain.role.RoleName;
-import com.abme.portal.domain.user.UserDto;
 import com.abme.portal.domain.role.RoleRepository;
 import com.abme.portal.domain.post.PostRepository;
 import com.abme.portal.domain.user.UserRegisterDto;

@@ -1,13 +1,13 @@
 package com.abme.portal.domain.user;
 
+import com.abme.portal.domain.post.PostDto;
+import com.abme.portal.extensions.SetExtension;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,34 +15,26 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"uuid"})
 public class UserDto {
-
-    @NotNull
     private UUID uuid;
-
-    @Email
-    @Size(min = 5, max = 254)
-    private String email;
-
-    @Size(max = 50)
     private String firstName;
-
-    @Size(max = 50)
     private String lastName;
-
-    @Size(max = 50)
     private String username;
-
-    @Size(min = 5)
     private String profilePhotoUrl;
 
-    public static UserDto from(User user) {
+    private Set<PostDto> posts;
+    private Set<UserStubDto> following;
+    private Set<UserStubDto> followedBy;
+
+    public static UserDto fromUser(User user) {
         return new UserDto(
                 user.getUuid(),
-                user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
-                user.getProfilePhotoUrl()
+                user.getProfilePhotoUrl(),
+                SetExtension.map(user.getPosts(), PostDto::fromPost),
+                SetExtension.map(user.getFollowing(), UserStubDto::fromUser),
+                SetExtension.map(user.getFollowedBy(), UserStubDto::fromUser)
         );
     }
 }

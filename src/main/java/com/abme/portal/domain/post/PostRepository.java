@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByAuthor(User author);
-    List<Post> findByAuthorNot(User author);
+    Set<Post> findByAuthor(User author);
+    Set<Post> findByAuthorNot(User author);
+    Set<Post> findByAuthor_Uuid(UUID authorUuid);
 }
