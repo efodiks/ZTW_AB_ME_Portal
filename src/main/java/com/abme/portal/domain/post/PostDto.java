@@ -1,6 +1,5 @@
 package com.abme.portal.domain.post;
 
-import com.abme.portal.domain.label.Label;
 import com.abme.portal.domain.user.UserStubDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(of = {"uuid"})
@@ -22,7 +22,7 @@ public class PostDto {
 
     UserStubDto author;
 
-    private Set<Label> labels;
+    private Set<String> labels;
 
     public static PostDto fromPost(Post post) {
         return new PostDto(
@@ -30,7 +30,11 @@ public class PostDto {
                 post.getURL(),
                 post.getDescription(),
                 post.getAuthor() != null ? UserStubDto.fromUser(post.getAuthor()) : null,
-                post.getLabels()
+                post
+                        .getLabels()
+                        .stream()
+                        .map(label -> label.getLabelName().name())
+                        .collect(Collectors.toSet())
         );
     }
 }
