@@ -25,4 +25,18 @@ public class UserFacade {
         var posts = postRepository.findByAuthor_Uuid(uuid);
         return SetExtension.map(posts, PostDto::fromPost);
     }
+
+    public void addFollow(UUID from, UUID to) {
+        var fromUser = userRepository.findOneByUuid(from).orElseThrow(UserNotFoundException::new);
+        var toUser =  userRepository.findOneByUuid(to).orElseThrow(UserNotFoundException::new);
+        fromUser.getFollowing().add(toUser);
+        userRepository.save(toUser);
+    }
+
+    public void removeFollow(UUID from, UUID to) {
+        var fromUser = userRepository.findOneByUuid(from).orElseThrow(UserNotFoundException::new);
+        var toUser =  userRepository.findOneByUuid(to).orElseThrow(UserNotFoundException::new);
+        fromUser.getFollowing().remove(toUser);
+        userRepository.save(fromUser);
+    }
 }
