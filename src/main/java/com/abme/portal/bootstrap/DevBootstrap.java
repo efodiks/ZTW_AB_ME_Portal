@@ -1,6 +1,7 @@
 package com.abme.portal.bootstrap;
 
 
+import com.abme.portal.domain.authentication.AuthenticationFacade;
 import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.role.Role;
 import com.abme.portal.domain.role.RoleName;
@@ -27,7 +28,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public static final int USERS_COUNT = 10;
 
     private final RoleRepository roleRepository;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final FakeUserGeneratorService fakeUserGeneratorService;
@@ -77,8 +78,8 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
                 "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
         );
 
-        customUserDetailsService.registerUser(user1);
-        customUserDetailsService.registerUser(user2);
+        authenticationFacade.registerUser(user1);
+        authenticationFacade.registerUser(user2);
     }
 
     private void bootStrapPosts() {

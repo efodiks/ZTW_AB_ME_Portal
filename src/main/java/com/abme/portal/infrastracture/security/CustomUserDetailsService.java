@@ -22,31 +22,6 @@ import java.util.Set;
 public class CustomUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Transactional
-    public UserStubDto registerUser(UserRegisterDto userRegister) {
-        var authority = roleRepository.findByName(RoleName.ROLE_USER);
-
-        var user = new User(
-                null,
-                userRegister.getUuid(),
-                userRegister.getEmail(),
-                passwordEncoder.encode(userRegister.getPassword()),
-                userRegister.getFirstName(),
-                userRegister.getLastName(),
-                userRegister.getUsername(),
-                userRegister.getProfilePhotoUrl(),
-                authority,
-                Set.of(),
-                Set.of(),
-                Set.of()
-        );
-
-        userRepository.save(user);
-        return UserStubDto.fromUser(user);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,5 +1,7 @@
 package com.abme.portal.infrastracture.rest;
 
+import com.abme.portal.domain.authentication.AuthenticationFacade;
+import com.abme.portal.domain.authentication.LoginResponseDto;
 import com.abme.portal.domain.user.UserStubDto;
 import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.authentication.LoginDto;
@@ -28,29 +30,19 @@ import java.util.Date;
 @RequestMapping("/api")
 public class AuthenticationController {
 
-    private final TokenProvider tokenProvider;
-
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationFacade authenticationFacade;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<JwtToken> authorize(@Valid @RequestBody LoginDto loginDTO) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
-
-        var authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        var jwtToken = tokenProvider.createToken(authentication, new Date());
-
+    public ResponseEntity<LoginResponseDto> authorize(@Valid @RequestBody LoginDto loginDTO) {
+        var loginResponseDto = authenticationFacade.tryToLoginUser(loginDTO);
         log.info(String.format("Authenticated user with email %s", loginDTO.getEmail()));
-        return ResponseEntity.ok(jwtToken);
+        return ResponseEntity.ok(loginResponseDto);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserStubDto> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) throws URISyntaxException {
-        var userDto = customUserDetailsService.registerUser(userRegisterDto);
-        return ResponseEntity.created(new URI("/api/users/" + userDto.getUuid())).body(userDto);
+        var userStubDto = authenticationFacade.registerUser(userRegisterDto);
+        log.info(String.format("Registering user with email %s", userRegisterDto.getEmail()));
+        return ResponseEntity.created(new URI("/api/users/" + userStubDto.getUuid())).body(userStubDto);
     }
 }
