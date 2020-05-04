@@ -58,7 +58,7 @@ class FakeUserGeneratorServiceTest {
         //then
         verify(roleRepository, times(1)).findByName(any());
 
-        verify(userRepository, times(1)).saveAll(captor.capture());
+        verify(userRepository, times(2)).saveAll(captor.capture());
 
         assertEquals(captor.getValue().spliterator().getExactSizeIfKnown(), USERS_COUNT);
     }
