@@ -33,7 +33,7 @@ public class PostDto {
                 post
                         .getLabels()
                         .stream()
-                        .map(label -> label.getLabelName().name())
+                        .map(label -> label.getLabelName())
                         .collect(Collectors.toSet())
         );
     }

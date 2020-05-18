@@ -1,7 +1,6 @@
 package com.abme.portal.bootstrap;
 
 import com.abme.portal.domain.label.Label;
-import com.abme.portal.domain.label.LabelName;
 import com.abme.portal.domain.label.LabelRepository;
 import com.abme.portal.domain.post.Post;
 import com.abme.portal.domain.user.User;
@@ -54,7 +53,7 @@ class FakePostsGeneratorServiceTest {
     void insertPosts() {
         //given
         when(userRepository.findAll()).thenReturn(List.of(user));
-        when(labelRepository.findAll()).thenReturn(Arrays.asList(new Label(1L, LabelName.ANIMALS), new Label(2L, LabelName.DOGS)));
+        when(labelRepository.findAll()).thenReturn(Arrays.asList(new Label(1L, "ANIMALS"), new Label(2L, "DOGS")));
 
         //when
         fakePostsGeneratorService.insertPosts(POSTS_COUNT);

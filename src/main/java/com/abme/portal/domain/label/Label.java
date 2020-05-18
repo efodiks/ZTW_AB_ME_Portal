@@ -19,8 +19,7 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(unique = true, updatable = false)
-    private LabelName labelName;
+    private String labelName;
 }

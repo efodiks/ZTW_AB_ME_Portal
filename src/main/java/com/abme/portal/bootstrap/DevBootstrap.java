@@ -2,14 +2,12 @@ package com.abme.portal.bootstrap;
 
 
 import com.abme.portal.domain.authentication.AuthenticationFacade;
-import com.abme.portal.domain.label.Label;
-import com.abme.portal.domain.label.LabelName;
 import com.abme.portal.domain.label.LabelRepository;
 import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.post.PostRepository;
 import com.abme.portal.domain.role.Role;
 import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.role.RoleRepository;
-import com.abme.portal.domain.post.PostRepository;
 import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,15 +46,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
                     new Role(RoleName.ROLE_USER),
                     new Role(RoleName.ROLE_ADMIN)
             ));
-        }
-
-        if (labelRepository.findAll().isEmpty()) {
-            log.info("Bootstrapping labels");
-            labelRepository.saveAll(
-                    Stream.of(LabelName.values())
-                            .map(labelName -> new Label(null, labelName))
-                            .collect(Collectors.toList())
-            );
         }
 
         if (!userRepository.findAll().iterator().hasNext()) {
