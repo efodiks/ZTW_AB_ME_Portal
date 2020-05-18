@@ -40,13 +40,6 @@ public class JwtConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

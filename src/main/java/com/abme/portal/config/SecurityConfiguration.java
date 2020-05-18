@@ -22,17 +22,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
-                .headers().frameOptions().disable()
-                .and()
-                .cors()
-                .and()
+                .headers().frameOptions().disable().and()
+                .cors().and()
                 .authorizeRequests()
-                .antMatchers("/api/posts/**").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/users/**").permitAll()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .and()
+                    .antMatchers("/api/authenticate").permitAll()
+                    .antMatchers("/api/register").permitAll()
+                    .antMatchers("/api/**").hasRole("USER")
+                    .and()
                 .addFilterBefore(new JwtFilter(tokenProvider, securityProperties), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
