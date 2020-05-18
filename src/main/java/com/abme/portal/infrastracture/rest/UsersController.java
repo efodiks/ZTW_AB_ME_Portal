@@ -42,6 +42,7 @@ public class UsersController {
     @PutMapping("/{userUuid}/addFollow")
     public ResponseEntity<Void> addFollow(@PathVariable("userUuid") UUID from, @RequestBody FollowDto followDto) {
         userFacade.addFollow(from, followDto.getTo());
+        log.info(String.format("Added follow from user with uuid %s to user with uuid %s", from, followDto.getTo()));
         return ResponseEntity.noContent().build();
     }
 
@@ -49,6 +50,7 @@ public class UsersController {
     @PutMapping("/{userUuid}/removeFollow")
     public ResponseEntity<Void> removeFollow(@PathVariable("userUuid") UUID from, @RequestBody FollowDto followDto) {
         userFacade.removeFollow(from, followDto.getTo());
+        log.info(String.format("Removed follow from user with uuid %s to user with uuid %s", from, followDto.getTo()));
         return ResponseEntity.noContent().build();
     }
 
