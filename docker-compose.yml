@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend:
+    image: efodikss/portal-frontend
+    ports:
+      - 80:5000
+    depends_on:
+      - backend
+  backend:
+    image: efodikss/portal-backend
+    ports:
+      - 8080:8080
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/home/usr/config/portal-google-api.json
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/home/usr/config
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60
