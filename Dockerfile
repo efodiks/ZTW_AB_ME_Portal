@@ -11,6 +11,7 @@ RUN ["/usr/local/bin/mvn-entrypoint.sh", "mvn", "dependency:go-offline"]
 
 #set up google api credantials file
 COPY init_google_api_key_file.sh .
+RUN mkdir -p ./secret
 RUN ./init_google_api_key_file.sh
 ENV GOOGLE_APPLICATION_CREDENTIALS="./secret/portal-google-api.json"
 
