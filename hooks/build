@@ -6,7 +6,7 @@ docker build -t $IMAGE_NAME \
   --build-arg client_email=$client_email \
   --build-arg client_id=$client_id \
   --build-arg client_x509_cert_url=$client_x509_cert_url \
-  --build-arg private_key=$private_key \
+  --build-arg -- private_key=$private_key \
   --build-arg private_key_id=$private_key_id \
   --build-arg project_id=$project_id \
   --build-arg token_uri=$token_uri \
