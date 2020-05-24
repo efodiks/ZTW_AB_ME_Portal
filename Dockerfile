@@ -1,16 +1,22 @@
-FROM adoptopenjdk/openjdk11:alpine
+FROM maven:3-openjdk-11-slim
 
-WORKDIR ./app
+# set up app directory
+ENV HOME=/home/usr/app
+RUN mkdir -p $HOME
+WORKDIR $HOME
 
-COPY .mvn ./.mvn
-COPY mvnw ./
-COPY pom.xml ./
-COPY src ./src
+#install dependencies
+COPY pom.xml .
+RUN ["/usr/local/bin/mvn-entrypoint.sh", "mvn", "dependency:go-offline"]
 
-RUN sh ./mvnw clean install
+#set up google api credantials file
+COPY init_google_api_key_file.sh .
+RUN ./init_google_api_key_file.sh
+ENV GOOGLE_APPLICATION_CREDENTIALS="./secret/portal-google-api.json"
 
-ARG JAR_FILE=target/*.jar
+#copy and package source code
+COPY . .
+RUN ["mvn", "package"]
 
-RUN mv ${JAR_FILE} ./target/app.jar
-
-ENTRYPOINT ["java","-jar","/app/target/app.jar"]
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","./target/*.jar"]
