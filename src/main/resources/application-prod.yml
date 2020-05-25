@@ -1,0 +1,13 @@
+security:
+  authorizationHeaderName: Authorization
+  authoritiesKey: auth
+  token:
+    prefix: Bearer
+    validityInSeconds: 864000
+spring:
+  datasource:
+    url: ${POSTGRES_DB_URL}
+    username: ${POSTGRES_DB_USERNAME}
+    password: ${POSTGRES_DB_PASSWORD}
+hibernate:
+  hbm2ddl: validate

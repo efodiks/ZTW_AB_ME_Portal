@@ -8,6 +8,7 @@ import com.abme.portal.domain.user.UserRepository;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Profile("dev")
 @Service
 @RequiredArgsConstructor
 public class FakeUserGeneratorService {
