@@ -30,10 +30,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class PostController {
 
-    @Autowired
     private ResourceLoader resourceLoader;
 
-    @Autowired
     private CloudVisionTemplate cloudVisionTemplate;
 
     private final PostFacade postFacade;

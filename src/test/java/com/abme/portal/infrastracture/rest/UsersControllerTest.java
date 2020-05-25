@@ -7,12 +7,14 @@ import com.abme.portal.domain.user.UserStubDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.gcp.autoconfigure.vision.CloudVisionAutoConfiguration;
+import org.springframework.cloud.gcp.vision.CloudVisionTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ActiveProfiles("dev")
-@SpringBootTest
+@SpringBootTest()
 @AutoConfigureMockMvc
 @EnableAutoConfiguration(exclude = CloudVisionAutoConfiguration.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -65,6 +67,9 @@ class UsersControllerTest {
 
     @MockBean
     private DevBootstrap devBootstrap;
+
+    @Mock
+    private CloudVisionTemplate cloudVisionTemplate;
 
     @Autowired
     private MockMvc mockMvc;
