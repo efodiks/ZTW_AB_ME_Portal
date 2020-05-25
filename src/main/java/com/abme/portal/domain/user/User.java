@@ -17,6 +17,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @EqualsAndHashCode(of = {"id"})
 @Entity
+@Table(name="user_table", schema = "public")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {

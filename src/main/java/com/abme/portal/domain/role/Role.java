@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="role_table", schema = "public")
 @EqualsAndHashCode(of = {"id"})
 @Accessors(chain = true)
 @NoArgsConstructor

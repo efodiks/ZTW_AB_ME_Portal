@@ -19,6 +19,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @EqualsAndHashCode(of = {"id"})
 @Entity
+@Table(name="post_table", schema = "public")
 public class Post
 {
     @Id

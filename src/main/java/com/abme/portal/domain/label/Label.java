@@ -9,6 +9,7 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
 @Entity
+@Table(name="label_table", schema = "public")
 @Data
 @EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor

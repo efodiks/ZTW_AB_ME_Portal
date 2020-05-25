@@ -6,6 +6,7 @@ import com.abme.portal.domain.user.User;
 import javax.persistence.*;
 
 @Entity
+@Table(name="comment_table", schema="public")
 public class Comment
 {
     @Id
