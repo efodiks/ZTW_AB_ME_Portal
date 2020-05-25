@@ -23,7 +23,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class)
 class FakeUserGeneratorServiceTest {
 

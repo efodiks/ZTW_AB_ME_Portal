@@ -24,7 +24,6 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class)
 class FakePostsGeneratorServiceTest {
 

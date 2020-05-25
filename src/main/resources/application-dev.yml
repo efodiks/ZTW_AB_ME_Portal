@@ -1,5 +1,5 @@
 security:
-  #secret: nkHdAWNrPz6iS4skz79mnwbLaxaeW9aXrwi7ijKi/GoONIk45VjnwLFn3/voMIhYvO/nBjdnUHEs/x66Pt0/BQ==
+  secret: nkHdAWNrPz6iS4skz79mnwbLaxaeW9aXrwi7ijKi/GoONIk45VjnwLFn3/voMIhYvO/nBjdnUHEs/x66Pt0/BQ==
   authorizationHeaderName: Authorization
   authoritiesKey: auth
   token:
