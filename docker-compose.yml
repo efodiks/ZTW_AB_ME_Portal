@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   frontend:
     image: efodikss/portal-frontend
@@ -12,10 +13,28 @@ services:
       - 8080:8080
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/home/usr/config/portal-google-api.json
+      - SECURITY_SECRET=$SECURITY_SECRET
+      - SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE
+      - POSTGRES_DB_URL=jdbc:postgresql://db:5432/portal
+      - POSTGRES_DB_USERNAME=${POSTGRES_USER}
+      - POSTGRES_DB_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ${GOOGLE_APPLICATION_CREDENTIALS}:/home/usr/config
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - 5432
   watchtower:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 60
+volumes:
+  pgdata:
