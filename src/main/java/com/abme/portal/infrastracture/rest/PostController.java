@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class PostController {
 
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
 
-    private CloudVisionTemplate cloudVisionTemplate;
+    private final CloudVisionTemplate cloudVisionTemplate;
 
     private final PostFacade postFacade;
 

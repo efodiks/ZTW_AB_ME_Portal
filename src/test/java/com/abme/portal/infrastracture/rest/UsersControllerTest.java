@@ -68,7 +68,7 @@ class UsersControllerTest {
     @MockBean
     private DevBootstrap devBootstrap;
 
-    @Mock
+    @MockBean
     private CloudVisionTemplate cloudVisionTemplate;
 
     @Autowired
