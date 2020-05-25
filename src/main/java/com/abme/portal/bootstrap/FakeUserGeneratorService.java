@@ -16,7 +16,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Profile("dev")
 @Service
 @RequiredArgsConstructor
 public class FakeUserGeneratorService {
