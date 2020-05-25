@@ -85,4 +85,12 @@ public class PostController {
         log.info(String.format("Getting user with email %s posts", authentication.getName()));
         return postFacade.getPostsByAuthorEmail(authentication.getName());
     }
+
+    @GetMapping("/posts/suggested")
+    @PreAuthorize("isAuthenticated()")
+    public Iterable<PostDto> getSuggestedPosts() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info(String.format("Getting suggested posts for user with email %s", authentication.getName()));
+        return postFacade.getSuggestedPostsForUserWithEmail(authentication.getName());
+    }
 }
