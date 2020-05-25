@@ -22,4 +22,8 @@ public class Label {
     @NaturalId
     @Column(unique = true, updatable = false)
     private String labelName;
+
+    public Label(String labelName) {
+        this.labelName = labelName;
+    }
 }
