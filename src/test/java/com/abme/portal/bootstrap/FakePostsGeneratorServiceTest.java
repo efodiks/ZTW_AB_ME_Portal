@@ -1,27 +1,26 @@
 package com.abme.portal.bootstrap;
 
-import com.abme.portal.domain.label.Label;
-import com.abme.portal.domain.label.LabelRepository;
-import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.post.AddPostDto;
+import com.abme.portal.domain.post.PostDto;
+import com.abme.portal.domain.post.PostFacade;
 import com.abme.portal.domain.user.User;
-import com.abme.portal.domain.post.PostRepository;
 import com.abme.portal.domain.user.UserRepository;
 import com.github.javafaker.Faker;
-import org.hamcrest.core.Every;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.StreamSupport;
+import java.util.Set;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,44 +32,49 @@ class FakePostsGeneratorServiceTest {
     final User user = new User(USER_ID);
 
     @Mock
-    PostRepository postRepository;
+    PostFacade postFacade;
 
     @Mock
     UserRepository userRepository;
 
-    @Mock
-    LabelRepository labelRepository;
-
     @Captor
-    ArgumentCaptor<Iterable<Post>> captor;
+    ArgumentCaptor<AddPostDto> captor;
 
     @BeforeEach
     void setUp() {
-        fakePostsGeneratorService = new FakePostsGeneratorService(postRepository, userRepository, labelRepository, Faker.instance());
+        fakePostsGeneratorService = new FakePostsGeneratorService(userRepository, postFacade, Faker.instance());
     }
+
+    private static final UUID POST_UUID = UUID.fromString("06bdb428-f71b-456b-b132-1f95903a8548");
+
+    private static final PostDto postDto = new PostDto(
+            POST_UUID,
+            "URL",
+            "description",
+            null,
+            Set.of("label1", "label2")
+    );
 
 
     @Test
     void insertPosts() {
         //given
         when(userRepository.findAll()).thenReturn(List.of(user));
-        when(labelRepository.findAll()).thenReturn(Arrays.asList(new Label(1L, "ANIMALS"), new Label(2L, "DOGS")));
+        when(postFacade.addPostWithLabelsToUserWithEmail(any(), eq(user.getEmail())))
+                .thenReturn(postDto);
 
         //when
         fakePostsGeneratorService.insertPosts(POSTS_COUNT);
 
         //then
         verify(userRepository, times(1)).findAll();
-        verify(postRepository, times(1)).saveAll(captor.capture());
+        verify(postFacade, times(POSTS_COUNT)).addPostWithLabelsToUserWithEmail(captor.capture(), any());
 
-        assertEquals(POSTS_COUNT, StreamSupport.stream(captor.getValue().spliterator(), false).count());
-        assertThat(captor.getValue(), Every.everyItem(
+        assertThat(captor.getValue(), (
                 allOf(
-                        hasProperty("labels", not(empty())),
                         hasProperty("uuid", notNullValue()),
-                        hasProperty("author", equalTo(user)),
                         hasProperty("description", not(blankOrNullString())),
-                        hasProperty("URL", not(blankOrNullString())),
-                        hasProperty("id", nullValue()))));
+                        hasProperty("URL", not(blankOrNullString()))
+                )));
     }
 }

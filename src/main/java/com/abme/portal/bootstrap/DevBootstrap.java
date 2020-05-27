@@ -3,7 +3,9 @@ package com.abme.portal.bootstrap;
 
 import com.abme.portal.domain.authentication.AuthenticationFacade;
 import com.abme.portal.domain.label.LabelRepository;
+import com.abme.portal.domain.post.AddPostDto;
 import com.abme.portal.domain.post.Post;
+import com.abme.portal.domain.post.PostFacade;
 import com.abme.portal.domain.post.PostRepository;
 import com.abme.portal.domain.role.Role;
 import com.abme.portal.domain.role.RoleName;
@@ -36,9 +38,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private final RoleRepository roleRepository;
     private final AuthenticationFacade authenticationFacade;
+    private final PostFacade postFacade;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private final LabelRepository labelRepository;
     private final FakeUserGeneratorService fakeUserGeneratorService;
     private final FakePostsGeneratorService fakePostsGeneratorService;
 
@@ -94,36 +96,28 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     private void bootStrapPosts() {
         var user1 = userRepository.findOneByEmailIgnoreCase("user1@user1.com");
         if (user1.isPresent()) {
-            var post1User1 = new Post(
-                    null,
+            var post1User1 = new AddPostDto(
                     UUID.randomUUID(),
-                    user1.get(),
                     "https://www.4yourspot.com/wp-content/uploads/2019/10/daily-cat-care-routine.jpg",
-                    "Kitty",
-                    Set.of()
+                    "Kitty"
             );
-            var post2User1 = new Post(
-                    null,
+            var post2User1 = new AddPostDto(
                     UUID.randomUUID(),
-                    user1.get(),
                     "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-                    "post nr 1",
-                    Set.of()
+                    "post nr 1"
             );
-
-            postRepository.saveAll(List.of(post1User1, post2User1));
+            postFacade.addPostWithLabelsToUserWithEmail(post1User1, user1.get().getEmail());
+            postFacade.addPostWithLabelsToUserWithEmail(post2User1, user1.get().getEmail());
         }
 
         var user2 = userRepository.findOneByEmailIgnoreCase("user2@user2.com");
         if (user2.isPresent()) {
-            var post1User2 = new Post(
-                    null,
+            var post1User2 = new AddPostDto(
                     UUID.randomUUID(),
-                    user2.get(),
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Calico_tabby_cat_-_Savannah.jpg/1200px-Calico_tabby_cat_-_Savannah.jpg",
-                    "Another kitty",
-                    Set.of()
+                    "Another kitty"
             );
+            postFacade.addPostWithLabelsToUserWithEmail(post1User2, user2.get().getEmail());
         }
     }
 }
