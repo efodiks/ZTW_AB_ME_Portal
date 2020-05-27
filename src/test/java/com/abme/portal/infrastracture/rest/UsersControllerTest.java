@@ -1,24 +1,16 @@
 package com.abme.portal.infrastracture.rest;
 
-import com.abme.portal.bootstrap.DevBootstrap;
 import com.abme.portal.domain.post.PostDto;
 import com.abme.portal.domain.user.UserFacade;
 import com.abme.portal.domain.user.UserStubDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.gcp.autoconfigure.vision.CloudVisionAutoConfiguration;
-import org.springframework.cloud.gcp.vision.CloudVisionTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
@@ -32,10 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@ActiveProfiles("dev")
-@SpringBootTest()
-@AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude = CloudVisionAutoConfiguration.class)
+@WebMvcTest(properties = "security.configuration.enabled=false",
+        controllers = UsersController.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UsersControllerTest {
 
@@ -65,19 +55,12 @@ class UsersControllerTest {
     @MockBean
     private UserFacade userFacade;
 
-    @MockBean
-    private DevBootstrap devBootstrap;
-
-    @MockBean
-    private CloudVisionTemplate cloudVisionTemplate;
-
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeAll
     private void mockOutput() {
         initializePosts();
-        when(userFacade.getUsersPosts(VALID_USER_ID)).thenReturn(posts);
         when(userFacade.getUsersPosts(INVALID_USER_ID)).thenReturn(Set.of());
     }
 
@@ -94,15 +77,26 @@ class UsersControllerTest {
     }
 
     @Test
-    void expected403ForbiddenWhenNotAuthorized() throws Exception {
+    void expected401UnauthorizedWhenNotAuthorized() throws Exception {
         mockMvc
                 .perform(get(String.format(API_USERS_USER_ID_POSTS, VALID_USER_ID)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser
+    @Test
+    void expect200OkEmptyContentWhenIdInvalid() throws Exception {
+        mockMvc
+                .perform(get(String.format(API_USERS_USER_ID_POSTS, INVALID_USER_ID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 
     @WithMockUser
     @Test
     void expect200OkAndResponseBodyWhenAuthorizedAndIdValid() throws Exception {
+        //when
+        when(userFacade.getUsersPosts(VALID_USER_ID)).thenReturn(posts);
         mockMvc
                 .perform(get(String.format(API_USERS_USER_ID_POSTS, VALID_USER_ID)))
                 .andExpect(status().isOk())

@@ -12,9 +12,11 @@ import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@ConditionalOnProperty(value = "data.bootstrap.enabled", matchIfMissing = true)
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -40,7 +43,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     private final FakePostsGeneratorService fakePostsGeneratorService;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void onApplicationEvent(@NonNull ContextRefreshedEvent contextRefreshedEvent) {
         if (roleRepository.findAll().isEmpty()) {
             log.info("Bootstrapping roles");
             roleRepository.saveAll(List.of(
