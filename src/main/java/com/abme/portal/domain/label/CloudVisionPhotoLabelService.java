@@ -8,8 +8,6 @@ import org.springframework.cloud.gcp.vision.CloudVisionTemplate;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,25 +18,15 @@ public class CloudVisionPhotoLabelService {
     private final CloudVisionTemplate cloudVisionTemplate;
     private final ResourceLoader resourceLoader;
 
-    public Set<String> GetImageLabelStrings(String URL)
-    {
+    public Set<String> GetImageLabelStrings(String URL) {
+        var resource = this.resourceLoader.getResource(URL);
         AnnotateImageResponse response =
-                this.cloudVisionTemplate.analyzeImage(
-                        this.resourceLoader.getResource(URL), Feature.Type.LABEL_DETECTION);
+                this.cloudVisionTemplate.analyzeImage(resource, Feature.Type.LABEL_DETECTION);
 
-        Map<String, Float> imageLabels =
-                response
-                        .getLabelAnnotationsList()
-                        .stream()
-                        .collect(
-                                Collectors.toMap(
-                                        EntityAnnotation::getDescription,
-                                        EntityAnnotation::getScore,
-                                        (u, v) -> {
-                                            throw new IllegalStateException(String.format("Duplicate key %s", u));
-                                        },
-                                        LinkedHashMap::new));
-
-        return imageLabels.keySet();
+        return response
+                .getLabelAnnotationsList()
+                .stream()
+                .map(EntityAnnotation::getDescription)
+                .collect(Collectors.toSet());
     }
 }

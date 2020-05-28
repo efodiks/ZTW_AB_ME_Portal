@@ -37,12 +37,15 @@ class FakePostsGeneratorServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    ImageUrlProvider imageUrlProvider;
+
     @Captor
     ArgumentCaptor<AddPostDto> captor;
 
     @BeforeEach
     void setUp() {
-        fakePostsGeneratorService = new FakePostsGeneratorService(userRepository, postFacade, Faker.instance());
+        fakePostsGeneratorService = new FakePostsGeneratorService("prod", userRepository, postFacade, Faker.instance(), imageUrlProvider);
     }
 
     private static final UUID POST_UUID = UUID.fromString("06bdb428-f71b-456b-b132-1f95903a8548");
@@ -55,6 +58,7 @@ class FakePostsGeneratorServiceTest {
             Set.of("label1", "label2")
     );
 
+    private static final String imageUrl = "image url";
 
     @Test
     void insertPosts() {
@@ -62,6 +66,7 @@ class FakePostsGeneratorServiceTest {
         when(userRepository.findAll()).thenReturn(List.of(user));
         when(postFacade.addPostWithLabelsToUserWithEmail(any(), eq(user.getEmail())))
                 .thenReturn(postDto);
+        when(imageUrlProvider.randomUrl()).thenReturn(imageUrl);
 
         //when
         fakePostsGeneratorService.insertPosts(POSTS_COUNT);

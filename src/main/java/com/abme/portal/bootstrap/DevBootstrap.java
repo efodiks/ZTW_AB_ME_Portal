@@ -12,8 +12,10 @@ import com.abme.portal.domain.role.RoleName;
 import com.abme.portal.domain.role.RoleRepository;
 import com.abme.portal.domain.user.UserRegisterDto;
 import com.abme.portal.domain.user.UserRepository;
+import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -36,6 +38,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     public static final int POSTS_COUNT = 100;
     public static final int USERS_COUNT = 10;
 
+    @Value("${spring.profiles.active}")
+    String activeProfile;
+
     private final RoleRepository roleRepository;
     private final AuthenticationFacade authenticationFacade;
     private final PostFacade postFacade;
@@ -43,6 +48,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     private final PostRepository postRepository;
     private final FakeUserGeneratorService fakeUserGeneratorService;
     private final FakePostsGeneratorService fakePostsGeneratorService;
+    private final ImageUrlProvider imageUrlProvider;
 
     @Override
     public void onApplicationEvent(@NonNull ContextRefreshedEvent contextRefreshedEvent) {
@@ -103,11 +109,17 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
             );
             var post2User1 = new AddPostDto(
                     UUID.randomUUID(),
-                    "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+                    imageUrlProvider.randomUrl(),
                     "post nr 1"
             );
-            postFacade.addPostWithLabelsToUserWithEmail(post1User1, user1.get().getEmail());
-            postFacade.addPostWithLabelsToUserWithEmail(post2User1, user1.get().getEmail());
+            if(activeProfile.equals("prod")){
+                postFacade.addPostWithLabelsToUserWithEmail(post1User1, user1.get().getEmail());
+                postFacade.addPostWithLabelsToUserWithEmail(post2User1, user1.get().getEmail());
+            }
+            else {
+                postFacade.addPostToUserWithEmail(post1User1, user1.get().getEmail());
+                postFacade.addPostToUserWithEmail(post2User1, user1.get().getEmail());
+            }
         }
 
         var user2 = userRepository.findOneByEmailIgnoreCase("user2@user2.com");
@@ -117,7 +129,11 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Calico_tabby_cat_-_Savannah.jpg/1200px-Calico_tabby_cat_-_Savannah.jpg",
                     "Another kitty"
             );
-            postFacade.addPostWithLabelsToUserWithEmail(post1User2, user2.get().getEmail());
+            if (activeProfile.equals("prod")) {
+                postFacade.addPostWithLabelsToUserWithEmail(post1User2, user2.get().getEmail());
+            } else {
+                postFacade.addPostToUserWithEmail(post1User2, user2.get().getEmail());
+            }
         }
     }
 }

@@ -22,6 +22,16 @@ public class PostFacade {
     private final UserRepository userRepository;
     private final LabelService labelService;
 
+    public PostDto addPostToUserWithEmail(AddPostDto addPostDto, String email) {
+        var author = userRepository
+                .findOneByEmailIgnoreCase(email)
+                .orElseThrow(UserNotFoundException::new);
+        Post post = Post.from(addPostDto);
+        post.setAuthor(author);
+        postRepository.save(post);
+        return PostDto.fromPost(post);
+    }
+
     public PostDto addPostWithLabelsToUserWithEmail(AddPostDto addPostDto, String email) {
         var author = userRepository
                 .findOneByEmailIgnoreCase(email)
